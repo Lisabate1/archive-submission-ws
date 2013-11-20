@@ -1,0 +1,212 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.springapp</groupId>
+    <artifactId>prider-submission-ws</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>prider-submission-ws</name>
+
+    <parent>
+        <groupId>uk.ac.ebi.pride.maven</groupId>
+        <artifactId>pride-base-master</artifactId>
+        <version>1.0.1</version>
+    </parent>
+
+    <properties>
+        <javax.activation.version>1.1.1</javax.activation.version>
+        <java.mail.version>1.4.4</java.mail.version>
+        <prider.service.version>0.1.5-SNAPSHOT</prider.service.version>
+        <prider.ws.model.version>0.1.3-SNAPSHOT</prider.ws.model.version>
+        <pride.web.utils.version>1.3.5</pride.web.utils.version>
+    </properties>
+
+    <build>
+        <finalName>${artifactId}-${version}</finalName>
+
+        <resources>
+            <!-- regular resources -->
+            <!-- Maven should filter properties files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/props/*.properties</include>
+                </includes>
+            </resource>
+            <!-- Maven should not filter other files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/props/*.properties</exclude>
+                </excludes>
+            </resource>
+
+            <!-- webapp resources -->
+            <resource>
+                <directory>src/main/webapp/WEB-INF</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>9091</port>
+                        </connector>
+                    </connectors>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>uk.ac.ebi.pride.prider</groupId>
+            <artifactId>prider-service</artifactId>
+            <version>${prider.service.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.ebi.pride.prider</groupId>
+            <artifactId>prider-ws-model</artifactId>
+            <version>${prider.ws.model.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.ebi.pride.web</groupId>
+            <artifactId>pride-web-utils</artifactId>
+            <version>${pride.web.utils.version}</version>
+        </dependency>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <!-- Spring test-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <!-- Spring security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+
+        <!--json-->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--&lt;!&ndash; px-datamodel &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>uk.ac.ebi.pride.datamodel.px</groupId>-->
+        <!--<artifactId>px-dm</artifactId>-->
+        <!--<version>1.4</version>-->
+        <!--</dependency>-->
+
+        <!-- AspectJ -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <!-- Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+        </dependency>
+
+        <!-- oracle jdbc driver -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>oracle-thin</artifactId>
+        </dependency>
+
+        <!--java mail-->
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>${javax.activation.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${java.mail.version}</version>
+        </dependency>
+
+        <!--email unit testing-->
+        <dependency>
+            <groupId>org.subethamail</groupId>
+            <artifactId>subethasmtp-wiser</artifactId>
+            <version>1.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--Apache commons-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <!-- EBI repo -->
+        <repository>
+            <id>nexus-ebi-repo</id>
+            <name>The EBI internal repository</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
+            <releases>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <!-- EBI SNAPSHOT repo -->
+        <repository>
+            <id>nexus-ebi-snapshot-repo</id>
+            <name>The EBI internal snapshot repository</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>
