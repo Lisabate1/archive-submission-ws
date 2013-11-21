@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.prider.submission.exception;
+package uk.ac.ebi.pride.prider.submission.error.submission;
 
 /**
  * @author Rui Wang

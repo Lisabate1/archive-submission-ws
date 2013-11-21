@@ -8,13 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.prider.submission.exception.SubmissionException;
+import uk.ac.ebi.pride.prider.service.person.UserService;
+import uk.ac.ebi.pride.prider.service.person.UserSummary;
+import uk.ac.ebi.pride.prider.submission.error.submission.SubmissionException;
 import uk.ac.ebi.pride.prider.submission.util.DropBoxManager;
 import uk.ac.ebi.pride.prider.submission.util.PrideEmailNotifier;
 import uk.ac.ebi.pride.prider.submission.util.SubmissionUtilities;
 import uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail;
 import uk.ac.ebi.pride.prider.webservice.submission.model.FtpUploadDetail;
 import uk.ac.ebi.pride.prider.webservice.submission.model.SubmissionReferenceDetail;
+import uk.ac.ebi.pride.prider.webservice.user.model.ContactDetail;
 
 import javax.mail.MessagingException;
 import java.io.File;
@@ -39,6 +42,9 @@ public class SubmissionController {
     @Autowired
     private PrideEmailNotifier prideEmailNotifier;
 
+    @Autowired
+    private UserService userService;
+
     @Value("#{pxProperties['px.submission.queue.dir']}")
     private String submissionQueue;
 
@@ -51,10 +57,31 @@ public class SubmissionController {
     /**
      * Request for ftp upload details
      */
+    @RequestMapping(value = "/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ContactDetail getUserDetail(Principal user) {
+
+        UserSummary userSummary = userService.findByEmail(user.getName());
+
+        ContactDetail contactDetail = new ContactDetail();
+        contactDetail.setEmail(userSummary.getEmail());
+        contactDetail.setAffiliation(userSummary.getAffiliation());
+        contactDetail.setFirstName(userSummary.getFirstName());
+        contactDetail.setLastName(userSummary.getLastName());
+        contactDetail.setTitle(userSummary.getTitle());
+
+        return contactDetail;
+    }
+
+    /**
+     * Request for ftp upload details
+     */
     @RequestMapping(value = "/ftp", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public FtpUploadDetail getFtpDetail(Principal user) {
+
         // select drop box
         DropBoxDetail selectedDropBox = dropBoxManager.selectFtpDropBox();
         logger.debug("FTP drop box selected: " + selectedDropBox.getDropBoxDirectory().getAbsolutePath());

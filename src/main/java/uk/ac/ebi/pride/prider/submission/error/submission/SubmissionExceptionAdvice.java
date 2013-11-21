@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.prider.submission.controller;
+package uk.ac.ebi.pride.prider.submission.error.submission;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import uk.ac.ebi.pride.prider.submission.exception.SubmissionException;
 import uk.ac.ebi.pride.web.util.exception.RestError;
 
 /**
@@ -30,7 +29,7 @@ public class SubmissionExceptionAdvice {
 
         return new RestError.Builder()
                 .setStatus(HttpStatus.BAD_REQUEST)
-                .setCode(10000)
+                .setCode(11000)
                 .setMessage("Submission exception")
                 .setDeveloperMessage(ex.getMessage())
                 .setMoreInfoUrl(pxUrl)
