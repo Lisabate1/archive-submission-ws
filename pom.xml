@@ -4,7 +4,7 @@
     <groupId>uk.ac.ebi.pride.prider</groupId>
     <artifactId>prider-submission-ws</artifactId>
     <packaging>war</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>prider-submission-ws</name>
 
     <!--
