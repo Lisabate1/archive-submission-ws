@@ -5,6 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 
 import javax.mail.MessagingException;
 import java.io.File;
+import java.text.DecimalFormat;
 
 /**
  * @author Jose A. Dianes
@@ -49,7 +50,10 @@ public class PrideEmailNotifier {
             builder.append(files.length - 1);
             builder.append(LINE_SEPARATOR);
             builder.append("Submission size [M]: ");
-            builder.append(getFolderSize(submissionFolder));
+            long folderSize = getFolderSize(submissionFolder);
+            double fileSize = (folderSize * 1.0) / (1024 * 1024);
+            DecimalFormat df = new DecimalFormat("#.###");
+            builder.append(df.format(fileSize));
             builder.append(LINE_SEPARATOR);
         }
 
@@ -89,6 +93,6 @@ public class PrideEmailNotifier {
             }
         }
 
-        return size/1024/1024;
+        return size;
     }
 }
