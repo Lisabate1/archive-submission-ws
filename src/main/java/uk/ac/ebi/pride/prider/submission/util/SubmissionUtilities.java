@@ -49,7 +49,7 @@ public class SubmissionUtilities {
             PrintWriter writer = null;
             try {
                 writer = new PrintWriter(new FileWriter(newTicket));
-                writer.append(folderToSubmit.getAbsolutePath());
+                writer.append(folderToSubmit.getCanonicalPath());
                 writer.flush();
             } finally {
                 if (writer != null) {
