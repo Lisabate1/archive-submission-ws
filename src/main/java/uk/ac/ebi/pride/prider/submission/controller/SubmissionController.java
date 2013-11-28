@@ -90,10 +90,8 @@ public class SubmissionController {
         File submissionDirectory = SubmissionUtilities.createFtpFolder(selectedDropBox.getDropBoxDirectory(), user.getName());
         logger.debug("FTP upload folder: " + submissionDirectory.getAbsolutePath());
 
-        File ftpFolder = new File(selectedDropBox.getDropBoxDirectory().getAbsolutePath() + System.getProperty("file.separator") + submissionDirectory.getName());
-
         // generate response
-        return new FtpUploadDetail(ftpHost, ftpPort, ftpFolder, selectedDropBox);
+        return new FtpUploadDetail(ftpHost, ftpPort, submissionDirectory, selectedDropBox);
     }
 
 
