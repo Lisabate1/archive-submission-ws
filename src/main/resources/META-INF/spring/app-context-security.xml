@@ -6,6 +6,7 @@
                              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http use-expressions="true" auto-config="false" create-session="never">
+        <intercept-url pattern="/resubmission/**" access="hasRole('SUBMITTER')"/>
         <intercept-url pattern="/submission/**" access="hasRole('SUBMITTER')"/>
         <intercept-url pattern="/**" access="denyAll"/>
         <http-basic/>

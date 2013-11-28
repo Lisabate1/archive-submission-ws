@@ -84,14 +84,14 @@ public class SubmissionController {
 
         // select drop box
         DropBoxDetail selectedDropBox = dropBoxManager.selectFtpDropBox();
-        logger.debug("FTP drop box selected: " + selectedDropBox.getDropBoxDirectory().getAbsolutePath());
+        logger.debug("FTP drop box selected: " + selectedDropBox.getDropBoxDirectory());
 
         // create submission folder
-        File submissionDirectory = SubmissionUtilities.createFtpFolder(selectedDropBox.getDropBoxDirectory(), user.getName());
+        File submissionDirectory = SubmissionUtilities.createFtpFolder(new File(selectedDropBox.getDropBoxDirectory()), user.getName());
         logger.debug("FTP upload folder: " + submissionDirectory.getAbsolutePath());
 
         // generate response
-        return new FtpUploadDetail(ftpHost, ftpPort, submissionDirectory, selectedDropBox);
+        return new FtpUploadDetail(ftpHost, ftpPort, submissionDirectory.getAbsolutePath(), selectedDropBox);
     }
 
 
@@ -114,10 +114,12 @@ public class SubmissionController {
         try {
 
             // create submission ticket in the submission queue
-            SubmissionUtilities.generateSubmissionTicket(new File(submissionQueue), ftpUploadDetail.getFolder(), submissionRef);
+            File folderToSubmit = new File(ftpUploadDetail.getFolder());
+
+            SubmissionUtilities.generateSubmissionTicket(new File(submissionQueue), folderToSubmit, submissionRef);
 
             // notify pride using email
-            prideEmailNotifier.notifyPride(user.getName(), ftpUploadDetail.getFolder(), submissionRef);
+            prideEmailNotifier.notifyPride(user.getName(), folderToSubmit, submissionRef);
 
         } catch (MessagingException e) {
             String msg = "Failed to send confirmation email to PRIDE";

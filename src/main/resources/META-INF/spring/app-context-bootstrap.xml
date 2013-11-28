@@ -13,6 +13,10 @@
         <constructor-arg name="userRepository" ref="userRepository"/>
     </bean>
 
+    <bean id="projectService" class="uk.ac.ebi.pride.prider.service.project.ProjectServiceImpl">
+        <constructor-arg name="projectRepository" ref="projectRepository"/>
+    </bean>
+
     <!-- App Config: defines shared resources visible to all other web components -->
     <bean id="prideEmailNotifier" class="uk.ac.ebi.pride.prider.submission.util.PrideEmailNotifier">
         <constructor-arg name="mailSender" ref="mailSender"/>
@@ -23,27 +27,27 @@
         <constructor-arg name="dropBoxDetails">
             <list>
                 <bean id="dropBoxOne" class="uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail">
-                    <constructor-arg name="dropBoxDirectory" value="file:${px.ftp.drop.box.one}"/>
+                    <constructor-arg name="dropBoxDirectory" value="${px.ftp.drop.box.one}"/>
                     <constructor-arg name="userName" value="${px.ftp.drop.box.one.user}"/>
                     <constructor-arg name="password" value="${px.ftp.drop.box.one.password}"/>
                 </bean>
                 <bean id="dropBoxTwo" class="uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail">
-                    <constructor-arg name="dropBoxDirectory" value="file:${px.ftp.drop.box.two}"/>
+                    <constructor-arg name="dropBoxDirectory" value="${px.ftp.drop.box.two}"/>
                     <constructor-arg name="userName" value="${px.ftp.drop.box.two.user}"/>
                     <constructor-arg name="password" value="${px.ftp.drop.box.two.password}"/>
                 </bean>
                 <bean id="dropBoxThree" class="uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail">
-                    <constructor-arg name="dropBoxDirectory" value="file:${px.ftp.drop.box.three}"/>
+                    <constructor-arg name="dropBoxDirectory" value="${px.ftp.drop.box.three}"/>
                     <constructor-arg name="userName" value="${px.ftp.drop.box.three.user}"/>
                     <constructor-arg name="password" value="${px.ftp.drop.box.three.password}"/>
                 </bean>
                 <bean id="dropBoxFour" class="uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail">
-                    <constructor-arg name="dropBoxDirectory" value="file:${px.ftp.drop.box.four}"/>
+                    <constructor-arg name="dropBoxDirectory" value="${px.ftp.drop.box.four}"/>
                     <constructor-arg name="userName" value="${px.ftp.drop.box.four.user}"/>
                     <constructor-arg name="password" value="${px.ftp.drop.box.four.password}"/>
                 </bean>
                 <bean id="dropBoxFive" class="uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail">
-                    <constructor-arg name="dropBoxDirectory" value="file:${px.ftp.drop.box.five}"/>
+                    <constructor-arg name="dropBoxDirectory" value="${px.ftp.drop.box.five}"/>
                     <constructor-arg name="userName" value="${px.ftp.drop.box.five.user}"/>
                     <constructor-arg name="password" value="${px.ftp.drop.box.five.password}"/>
                 </bean>

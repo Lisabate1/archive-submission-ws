@@ -14,9 +14,18 @@
         </encoder>
     </appender>
 
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>${catalina.base}/logs/submission-ws.log</file>
+
+        <encoder>
+            <pattern>%.-1level|%-40.40logger{0}|%msg%n</pattern>
+        </encoder>
+    </appender>
+
     <logger name="org.springframework" level="error" />
 
-    <root level="warn">
+    <root level="info">
         <appender-ref ref="console" />
+        <appender-ref ref="file" />
     </root>
 </configuration>
