@@ -4,7 +4,7 @@
     <groupId>uk.ac.ebi.pride.prider</groupId>
     <artifactId>prider-submission-ws</artifactId>
     <packaging>war</packaging>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>prider-submission-ws</name>
 
     <!--
@@ -23,7 +23,7 @@
 
     <properties>
         <java.mail.version>1.4.4</java.mail.version>
-        <prider.service.version>0.1.5-SNAPSHOT</prider.service.version>
+        <prider.service.version>0.1.8</prider.service.version>
         <prider.ws.model.version>0.1.5</prider.ws.model.version>
         <pride.web.utils.version>1.3.8</pride.web.utils.version>
     </properties>
