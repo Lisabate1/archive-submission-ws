@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import uk.ac.ebi.pride.archive.submission.model.project.ProjectDetail;
+import uk.ac.ebi.pride.archive.submission.model.project.ProjectDetailList;
 import uk.ac.ebi.pride.prider.service.person.UserService;
 import uk.ac.ebi.pride.prider.service.person.UserSummary;
 import uk.ac.ebi.pride.prider.service.project.ProjectService;
 import uk.ac.ebi.pride.prider.service.project.ProjectSummary;
-import uk.ac.ebi.pride.prider.webservice.project.model.ProjectDetail;
-import uk.ac.ebi.pride.prider.webservice.project.model.ProjectDetailList;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -52,8 +52,7 @@ public class ResubmissionController {
         ProjectDetailList projectDetailList = new ProjectDetailList();
         for (ProjectSummary projectSummary : projectSummaries) {
             if (!projectSummary.isPublicProject()) {
-                ProjectDetail projectDetail = new ProjectDetail();
-                projectDetail.setAccession(projectSummary.getAccession());
+                ProjectDetail projectDetail = new ProjectDetail(projectSummary.getAccession());
                 projectDetailList.addProjectDetail(projectDetail);
             }
         }

@@ -26,52 +26,52 @@
     <bean id="dropBoxManager" class="uk.ac.ebi.pride.prider.submission.util.DropBoxManager">
         <constructor-arg name="dropBoxDetails">
             <list>
-                <bean id="dropBoxOne" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxOne" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.one}"/>
                     <constructor-arg name="userName" value="${px.drop.box.one.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.one.password}"/>
                 </bean>
-                <bean id="dropBoxTwo" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxTwo" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.two}"/>
                     <constructor-arg name="userName" value="${px.drop.box.two.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.two.password}"/>
                 </bean>
-                <bean id="dropBoxThree" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxThree" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.three}"/>
                     <constructor-arg name="userName" value="${px.drop.box.three.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.three.password}"/>
                 </bean>
-                <bean id="dropBoxFour" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxFour" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.four}"/>
                     <constructor-arg name="userName" value="${px.drop.box.four.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.four.password}"/>
                 </bean>
-                <bean id="dropBoxFive" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxFive" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.five}"/>
                     <constructor-arg name="userName" value="${px.drop.box.five.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.five.password}"/>
                 </bean>
-                <bean id="dropBoxSix" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxSix" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.six}"/>
                     <constructor-arg name="userName" value="${px.drop.box.six.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.six.password}"/>
                 </bean>
-                <bean id="dropBoxSeven" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxSeven" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.seven}"/>
                     <constructor-arg name="userName" value="${px.drop.box.seven.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.seven.password}"/>
                 </bean>
-                <bean id="dropBoxEight" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxEight" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.eight}"/>
                     <constructor-arg name="userName" value="${px.drop.box.eight.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.eight.password}"/>
                 </bean>
-                <bean id="dropBoxNine" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxNine" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.nine}"/>
                     <constructor-arg name="userName" value="${px.drop.box.nine.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.nine.password}"/>
                 </bean>
-                <bean id="dropBoxTen" class="uk.ac.ebi.pride.archive.submission.model.DropBoxDetail">
+                <bean id="dropBoxTen" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">
                     <constructor-arg name="dropBoxDirectory" value="${px.drop.box.ten}"/>
                     <constructor-arg name="userName" value="${px.drop.box.ten.user}"/>
                     <constructor-arg name="password" value="${px.drop.box.ten.password}"/>

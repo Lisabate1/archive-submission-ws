@@ -8,7 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.archive.submission.model.*;
+import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
+import uk.ac.ebi.pride.archive.submission.model.submission.SubmissionReferenceDetail;
+import uk.ac.ebi.pride.archive.submission.model.submission.UploadDetail;
+import uk.ac.ebi.pride.archive.submission.model.submission.UploadMethod;
+import uk.ac.ebi.pride.archive.submission.model.user.ContactDetail;
 import uk.ac.ebi.pride.prider.service.person.UserService;
 import uk.ac.ebi.pride.prider.service.person.UserSummary;
 import uk.ac.ebi.pride.prider.submission.error.submission.SubmissionException;
@@ -65,14 +69,11 @@ public class SubmissionController {
 
         UserSummary userSummary = userService.findByEmail(user.getName());
 
-        ContactDetail contactDetail = new ContactDetail();
-        contactDetail.setEmail(userSummary.getEmail());
-        contactDetail.setAffiliation(userSummary.getAffiliation());
-        contactDetail.setFirstName(userSummary.getFirstName());
-        contactDetail.setLastName(userSummary.getLastName());
-        contactDetail.setTitle(userSummary.getTitle());
-
-        return contactDetail;
+        return new ContactDetail(userSummary.getEmail(),
+                                 userSummary.getTitle(),
+                                 userSummary.getFirstName(),
+                                 userSummary.getLastName(),
+                                 userSummary.getAffiliation());
     }
 
     /**

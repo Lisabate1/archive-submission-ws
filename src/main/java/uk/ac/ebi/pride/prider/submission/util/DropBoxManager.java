@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.prider.submission.util;
 
 
-import uk.ac.ebi.pride.archive.submission.model.DropBoxDetail;
+import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
 
 import java.util.ArrayList;
 import java.util.Collection;
