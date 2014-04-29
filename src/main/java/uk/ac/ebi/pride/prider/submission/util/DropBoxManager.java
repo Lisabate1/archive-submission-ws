@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.prider.submission.util;
 
-import uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail;
+
+import uk.ac.ebi.pride.archive.submission.model.DropBoxDetail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +9,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * DropBoxFactory is responsible for assigning the right FTP drop box for uploading
+ * DropBoxFactory is responsible for assigning the right drop box for uploading
+ *
+ * Currently, there can be either FTP dropboxes or Aspera dropboxes
  *
  * @author Jose A. Dianes
  * @author Rui Wang
@@ -24,12 +27,12 @@ public class DropBoxManager {
     }
 
     /**
-     * Select ftp drop box
+     * Select drop box
      * Note: round-robin selection of the drop box
      *
      * @return selected drop box directory
      */
-    public DropBoxDetail selectFtpDropBox() {
+    public DropBoxDetail selectDropBox() {
         synchronized (this) {
             // deciding on the index of the drop box to be selected
             dropBoxSelectionIndex++;

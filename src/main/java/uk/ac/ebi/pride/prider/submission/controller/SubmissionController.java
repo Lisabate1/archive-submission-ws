@@ -8,16 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.archive.submission.model.*;
 import uk.ac.ebi.pride.prider.service.person.UserService;
 import uk.ac.ebi.pride.prider.service.person.UserSummary;
 import uk.ac.ebi.pride.prider.submission.error.submission.SubmissionException;
 import uk.ac.ebi.pride.prider.submission.util.DropBoxManager;
 import uk.ac.ebi.pride.prider.submission.util.PrideEmailNotifier;
 import uk.ac.ebi.pride.prider.submission.util.SubmissionUtilities;
-import uk.ac.ebi.pride.prider.webservice.submission.model.DropBoxDetail;
-import uk.ac.ebi.pride.prider.webservice.submission.model.FtpUploadDetail;
-import uk.ac.ebi.pride.prider.webservice.submission.model.SubmissionReferenceDetail;
-import uk.ac.ebi.pride.prider.webservice.user.model.ContactDetail;
 
 import javax.mail.MessagingException;
 import java.io.File;
@@ -54,6 +51,10 @@ public class SubmissionController {
     @Value("#{pxProperties['px.ftp.server.port']}")
     private int ftpPort;
 
+    @Value("#{pxProperties['px.aspera.server.address']}")
+    private String asperaHost;
+
+
     /**
      * Request for ftp upload details
      */
@@ -77,23 +78,30 @@ public class SubmissionController {
     /**
      * Request for ftp upload details
      */
-    @RequestMapping(value = "/ftp", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/upload/{method}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public FtpUploadDetail getFtpDetail(Principal user) {
+    public UploadDetail getUploadDetail(@PathVariable("method") String method, Principal user) {
+        final UploadMethod uploadMethod = UploadMethod.findMethod(method);
 
         // select drop box
-        DropBoxDetail selectedDropBox = dropBoxManager.selectFtpDropBox();
-        logger.debug("FTP drop box selected: " + selectedDropBox.getDropBoxDirectory());
+        DropBoxDetail selectedDropBox = dropBoxManager.selectDropBox();
+        logger.debug("Drop box selected: {} for {} method", selectedDropBox.getDropBoxDirectory(), method);
 
         // create submission folder
         File submissionDirectory = SubmissionUtilities.createFtpFolder(new File(selectedDropBox.getDropBoxDirectory()), user.getName());
-        logger.debug("FTP upload folder: " + submissionDirectory.getAbsolutePath());
+        logger.debug("Upload folder: " + submissionDirectory.getAbsolutePath());
 
         // generate response
-        return new FtpUploadDetail(ftpHost, ftpPort, submissionDirectory.getAbsolutePath(), selectedDropBox);
+        switch (uploadMethod) {
+            case FTP:
+                return new UploadDetail(UploadMethod.FTP, ftpHost, ftpPort, submissionDirectory.getAbsolutePath(), selectedDropBox);
+            case ASPERA:
+                return new UploadDetail(UploadMethod.ASPERA, asperaHost, -1, submissionDirectory.getAbsolutePath(), selectedDropBox);
+            default:
+                throw new SubmissionException("Unrecogonised submission method: " + method);
+        }
     }
-
 
     /**
      * Confirm a ProteomeXchange submission is finished
@@ -105,8 +113,8 @@ public class SubmissionController {
     @RequestMapping(value = "/submit", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public SubmissionReferenceDetail completeSubmission(@RequestBody FtpUploadDetail ftpUploadDetail, Principal user) {
-        logger.info("New -submit- request for user:" + user.getName() + " folder:" + ftpUploadDetail.getFolder());
+    public SubmissionReferenceDetail completeSubmission(@RequestBody UploadDetail uploadDetail, Principal user) {
+        logger.info("New -submit- request for user:" + user.getName() + " folder:" + uploadDetail.getFolder());
 
         // generate submission reference id
         String submissionRef = SubmissionUtilities.generateSubmissionReference();
@@ -114,7 +122,7 @@ public class SubmissionController {
         try {
 
             // create submission ticket in the submission queue
-            File folderToSubmit = new File(ftpUploadDetail.getFolder());
+            File folderToSubmit = new File(uploadDetail.getFolder());
 
             SubmissionUtilities.generateSubmissionTicket(new File(submissionQueue), folderToSubmit, submissionRef);
 
