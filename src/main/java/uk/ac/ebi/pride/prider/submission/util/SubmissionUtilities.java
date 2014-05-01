@@ -66,7 +66,7 @@ public class SubmissionUtilities {
      * The creation of the folder should be done by the client side,
      * this is a design compromise for EBI file system permissions
      */
-    public static File createFtpFolder(File folder, String userName) {
+    public static File createUploadFolder(File folder, String userName) {
         String path = folder.getAbsolutePath();
 
         String[] parts = userName.split("@");

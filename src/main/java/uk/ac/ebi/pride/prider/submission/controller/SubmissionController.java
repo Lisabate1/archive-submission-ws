@@ -90,7 +90,7 @@ public class SubmissionController {
         logger.debug("Drop box selected: {} for {} method", selectedDropBox.getDropBoxDirectory(), method);
 
         // create submission folder
-        File submissionDirectory = SubmissionUtilities.createFtpFolder(new File(selectedDropBox.getDropBoxDirectory()), user.getName());
+        File submissionDirectory = SubmissionUtilities.createUploadFolder(new File(selectedDropBox.getDropBoxDirectory()), user.getName());
         logger.debug("Upload folder: " + submissionDirectory.getAbsolutePath());
 
         // generate response
