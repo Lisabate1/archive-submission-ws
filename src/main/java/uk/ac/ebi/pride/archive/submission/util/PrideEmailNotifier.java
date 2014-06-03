@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.prider.submission.util;
+package uk.ac.ebi.pride.archive.submission.util;
 
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;

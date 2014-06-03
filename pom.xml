@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.ac.ebi.pride.prider</groupId>
-    <artifactId>prider-submission-ws</artifactId>
+    <artifactId>archive-submission-ws</artifactId>
     <packaging>war</packaging>
     <version>1.0.3</version>
-    <name>prider-submission-ws</name>
+    <name>archive-submission-ws</name>
 
     <!--
      To build the project several settings are required which are provided via maven profiles

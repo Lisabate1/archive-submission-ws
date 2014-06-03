@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.prider.submission.controller;
+package uk.ac.ebi.pride.archive.submission.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

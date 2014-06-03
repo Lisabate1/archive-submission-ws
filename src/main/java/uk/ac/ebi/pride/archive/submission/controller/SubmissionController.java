@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.prider.submission.controller;
+package uk.ac.ebi.pride.archive.submission.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +15,10 @@ import uk.ac.ebi.pride.archive.submission.model.submission.UploadMethod;
 import uk.ac.ebi.pride.archive.submission.model.user.ContactDetail;
 import uk.ac.ebi.pride.prider.service.person.UserService;
 import uk.ac.ebi.pride.prider.service.person.UserSummary;
-import uk.ac.ebi.pride.prider.submission.error.submission.SubmissionException;
-import uk.ac.ebi.pride.prider.submission.util.DropBoxManager;
-import uk.ac.ebi.pride.prider.submission.util.PrideEmailNotifier;
-import uk.ac.ebi.pride.prider.submission.util.SubmissionUtilities;
+import uk.ac.ebi.pride.archive.submission.error.submission.SubmissionException;
+import uk.ac.ebi.pride.archive.submission.util.DropBoxManager;
+import uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier;
+import uk.ac.ebi.pride.archive.submission.util.SubmissionUtilities;
 
 import javax.mail.MessagingException;
 import java.io.File;

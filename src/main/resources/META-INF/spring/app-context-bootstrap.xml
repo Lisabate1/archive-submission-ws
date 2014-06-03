@@ -18,12 +18,12 @@
     </bean>
 
     <!-- App Config: defines shared resources visible to all other web components -->
-    <bean id="prideEmailNotifier" class="uk.ac.ebi.pride.prider.submission.util.PrideEmailNotifier">
+    <bean id="prideEmailNotifier" class="uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier">
         <constructor-arg name="mailSender" ref="mailSender"/>
         <constructor-arg name="templateMessage" ref="templateMessage"/>
     </bean>
 
-    <bean id="dropBoxManager" class="uk.ac.ebi.pride.prider.submission.util.DropBoxManager">
+    <bean id="dropBoxManager" class="uk.ac.ebi.pride.archive.submission.util.DropBoxManager">
         <constructor-arg name="dropBoxDetails">
             <list>
                 <bean id="dropBoxOne" class="uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail">

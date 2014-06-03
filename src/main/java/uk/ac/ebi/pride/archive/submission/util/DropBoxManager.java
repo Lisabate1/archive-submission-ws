@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.prider.submission.util;
+package uk.ac.ebi.pride.archive.submission.util;
 
 
 import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
