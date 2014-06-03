@@ -25,7 +25,9 @@ public class AccessDeniedAdvice {
         logger.error(ex.getMessage(), ex);
         RestError accessDeny = RestErrorRegistry.getRestErrorByClass(AccessDeniedException.class);
 
-        accessDeny.setDeveloperMessage("Access denied for user " + principal.getName());
+        if (principal != null) {
+            accessDeny.setDeveloperMessage("Access denied for user " + principal.getName());
+        }
 
         return accessDeny;
     }
