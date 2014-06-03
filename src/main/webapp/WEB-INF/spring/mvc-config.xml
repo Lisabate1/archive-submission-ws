@@ -12,7 +12,7 @@
     <!-- Enables the Spring MVC @Controller programming model -->
     <annotation-driven />
 
-    <context:component-scan base-package="uk.ac.ebi.pride.prider.submission.controller,
-                                          uk.ac.ebi.pride.prider.submission.error" />
+    <context:component-scan base-package="uk.ac.ebi.pride.archive.submission.controller,
+                                          uk.ac.ebi.pride.archive.submission.error" />
 
 </beans:beans>
