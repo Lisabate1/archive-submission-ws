@@ -23,13 +23,14 @@
 
     <properties>
         <java.mail.version>1.4.4</java.mail.version>
-        <prider.service.version>0.1.8</prider.service.version>
-        <prider.submission.model.version>1.0-SNAPSHOT</prider.submission.model.version>
+        <archive.repo.version>0.1.17-SNAPSHOT</archive.repo.version>
+        <archive.submission.model.version>1.0.0</archive.submission.model.version>
         <pride.web.utils.version>1.3.8</pride.web.utils.version>
+        <archive-security.version>0.1.0-SNAPSHOT</archive-security.version>
     </properties>
 
     <build>
-        <finalName>${artifactId}-${version}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
 
         <resources>
             <!-- regular resources -->
@@ -76,20 +77,26 @@
 
     <dependencies>
         <dependency>
-            <groupId>uk.ac.ebi.pride.prider</groupId>
-            <artifactId>prider-service</artifactId>
-            <version>${prider.service.version}</version>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-repo</artifactId>
+            <version>${archive.repo.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.ac.ebi.pride.archive</groupId>
-            <artifactId>prider-submission-model</artifactId>
-            <version>${prider.submission.model.version}</version>
+            <artifactId>archive-submission-model</artifactId>
+            <version>${archive.submission.model.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.ac.ebi.pride.web</groupId>
             <artifactId>pride-web-utils</artifactId>
             <version>${pride.web.utils.version}</version>
         </dependency>
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>archive-security</artifactId>
+            <version>${archive-security.version}</version>
+        </dependency>
+
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>

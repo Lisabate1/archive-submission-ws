@@ -7,7 +7,7 @@
                             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
                             http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <jpa:repositories base-package="uk.ac.ebi.pride.prider.repo"/>
+    <jpa:repositories base-package="uk.ac.ebi.pride.archive.repo"/>
 
     <!--Setup data source using place holder properties-->
     <bean id="priderDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">

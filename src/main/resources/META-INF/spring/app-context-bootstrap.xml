@@ -8,14 +8,10 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <bean id="userService" class="uk.ac.ebi.pride.prider.service.person.UserServiceImpl">
-        <constructor-arg name="projectRepository" ref="projectRepository"/>
-        <constructor-arg name="userRepository" ref="userRepository"/>
-    </bean>
-
-    <bean id="projectService" class="uk.ac.ebi.pride.prider.service.project.ProjectServiceImpl">
-        <constructor-arg name="projectRepository" ref="projectRepository"/>
-    </bean>
+    <!-- Root Context: defines shared resources visible to all other web components -->
+    <context:component-scan base-package="uk.ac.ebi.pride.archive.security.project,
+                                          uk.ac.ebi.pride.archive.security.user,
+                                          uk.ac.ebi.pride.archive.repo"/>
 
     <!-- App Config: defines shared resources visible to all other web components -->
     <bean id="prideEmailNotifier" class="uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier">

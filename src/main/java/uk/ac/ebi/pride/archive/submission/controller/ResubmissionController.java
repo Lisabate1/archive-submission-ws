@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import uk.ac.ebi.pride.archive.repo.project.service.ProjectSummary;
+import uk.ac.ebi.pride.archive.repo.user.service.UserSummary;
+import uk.ac.ebi.pride.archive.security.project.ProjectSecureService;
+import uk.ac.ebi.pride.archive.security.user.UserSecureReadOnlyService;
 import uk.ac.ebi.pride.archive.submission.model.project.ProjectDetail;
 import uk.ac.ebi.pride.archive.submission.model.project.ProjectDetailList;
-import uk.ac.ebi.pride.prider.service.person.UserService;
-import uk.ac.ebi.pride.prider.service.person.UserSummary;
-import uk.ac.ebi.pride.prider.service.project.ProjectService;
-import uk.ac.ebi.pride.prider.service.project.ProjectSummary;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -31,10 +31,10 @@ public class ResubmissionController {
     private static final Logger logger = LoggerFactory.getLogger(ResubmissionController.class);
 
     @Autowired
-    private ProjectService projectService;
+    private ProjectSecureService projectService;
 
     @Autowired
-    private UserService userService;
+    private UserSecureReadOnlyService userService;
 
     /**
      * Request for private project accessions

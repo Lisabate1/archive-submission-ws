@@ -8,14 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.archive.repo.user.service.UserSummary;
+import uk.ac.ebi.pride.archive.security.user.UserSecureReadOnlyService;
+import uk.ac.ebi.pride.archive.submission.error.submission.SubmissionException;
 import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.SubmissionReferenceDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.UploadDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.UploadMethod;
 import uk.ac.ebi.pride.archive.submission.model.user.ContactDetail;
-import uk.ac.ebi.pride.prider.service.person.UserService;
-import uk.ac.ebi.pride.prider.service.person.UserSummary;
-import uk.ac.ebi.pride.archive.submission.error.submission.SubmissionException;
 import uk.ac.ebi.pride.archive.submission.util.DropBoxManager;
 import uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier;
 import uk.ac.ebi.pride.archive.submission.util.SubmissionUtilities;
@@ -44,7 +44,7 @@ public class SubmissionController {
     private PrideEmailNotifier prideEmailNotifier;
 
     @Autowired
-    private UserService userService;
+    private UserSecureReadOnlyService userService;
 
     @Value("#{pxProperties['px.submission.queue.dir']}")
     private String submissionQueue;
