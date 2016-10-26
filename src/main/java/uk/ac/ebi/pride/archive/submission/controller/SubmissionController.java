@@ -84,24 +84,22 @@ public class SubmissionController {
     @ResponseBody
     public UploadDetail getUploadDetail(@PathVariable("method") String method, Principal user) {
         final UploadMethod uploadMethod = UploadMethod.findMethod(method);
-
-        // select drop box
+        UploadDetail result;
         DropBoxDetail selectedDropBox = dropBoxManager.selectDropBox();
         logger.debug("Drop box selected: {} for {} method", selectedDropBox.getDropBoxDirectory(), method);
-
-        // create submission folder
         File submissionDirectory = SubmissionUtilities.createUploadFolder(new File(selectedDropBox.getDropBoxDirectory()), user.getName());
         logger.debug("Upload folder: " + submissionDirectory.getAbsolutePath());
-
-        // generate response
         switch (uploadMethod) {
             case FTP:
-                return new UploadDetail(UploadMethod.FTP, ftpHost, ftpPort, submissionDirectory.getAbsolutePath(), selectedDropBox);
+                result = new UploadDetail(UploadMethod.FTP, ftpHost, ftpPort, submissionDirectory.getAbsolutePath(), selectedDropBox);
+                break;
             case ASPERA:
-                return new UploadDetail(UploadMethod.ASPERA, asperaHost, -1, submissionDirectory.getAbsolutePath(), selectedDropBox);
+                result = new UploadDetail(UploadMethod.ASPERA, asperaHost, -1, submissionDirectory.getName(), selectedDropBox);
+                break;
             default:
-                throw new SubmissionException("Unrecogonised submission method: " + method);
+                throw new SubmissionException("Unrecognised submission method: " + method);
         }
+        return result;
     }
 
     /**
@@ -116,20 +114,13 @@ public class SubmissionController {
     @ResponseBody
     public SubmissionReferenceDetail completeSubmission(@RequestBody UploadDetail uploadDetail, Principal user) {
         logger.info("New -submit- request for user:" + user.getName() + " folder:" + uploadDetail.getFolder());
-
-        // generate submission reference id
         String submissionRef = SubmissionUtilities.generateSubmissionReference();
-
         try {
-
-            // create submission ticket in the submission queue
-            File folderToSubmit = new File(uploadDetail.getFolder());
-
+            File folderToSubmit = uploadDetail.getMethod() == UploadMethod.ASPERA ?
+                new File(uploadDetail.getDropBox().getDropBoxDirectory() + System.getProperty("file.separator") + uploadDetail.getFolder()) :
+                new File(uploadDetail.getFolder());
             SubmissionUtilities.generateSubmissionTicket(new File(submissionQueue), folderToSubmit, submissionRef);
-
-            // notify pride using email
-            prideEmailNotifier.notifyPride(user.getName(), folderToSubmit, submissionRef);
-
+            prideEmailNotifier.notifyPride(user.getName(), folderToSubmit, submissionRef, uploadDetail.getMethod().getMethod());
         } catch (MessagingException e) {
             String msg = "Failed to send confirmation email to PRIDE";
             logger.error(msg, e);
@@ -139,7 +130,6 @@ public class SubmissionController {
             logger.error(msg, e);
             throw new SubmissionException(msg, e);
         }
-
         return new SubmissionReferenceDetail(submissionRef);
     }
 }

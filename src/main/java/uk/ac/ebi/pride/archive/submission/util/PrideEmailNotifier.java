@@ -1,11 +1,14 @@
 package uk.ac.ebi.pride.archive.submission.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
 import javax.mail.MessagingException;
 import java.io.File;
-import java.text.DecimalFormat;
+import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * @author Jose A. Dianes
@@ -14,8 +17,9 @@ import java.text.DecimalFormat;
  */
 public class PrideEmailNotifier {
 
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final Logger logger = LoggerFactory.getLogger(PrideEmailNotifier.class);
 
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
     private MailSender mailSender;
     private SimpleMailMessage templateMessage;
 
@@ -34,30 +38,36 @@ public class PrideEmailNotifier {
      */
     public void notifyPride(String userEmail,
                             File submissionFolder,
-                            String submissionRef) throws MessagingException {
-
-
-        // generate email body
-        StringBuilder builder = new StringBuilder();
-        builder.append("Submission Reference: ");
-        builder.append(submissionRef);
-        builder.append(LINE_SEPARATOR);
-
-        // get files submitted
-        File files[] = submissionFolder.listFiles();
-        if (files != null) {
-            builder.append("Number of files submitted: ");
-            builder.append(files.length - 1);
-            builder.append(LINE_SEPARATOR);
-            builder.append("Submission size [M]: ");
-            long folderSize = getFolderSize(submissionFolder);
-            double fileSize = (folderSize * 1.0) / (1024 * 1024);
-            DecimalFormat df = new DecimalFormat("#.###");
-            builder.append(df.format(fileSize));
-            builder.append(LINE_SEPARATOR);
+                            String submissionRef, String uploadMethod) throws MessagingException {
+        long sizeTotal = 0;
+        int submittedFiles = 0;
+        if (submissionFolder!=null && submissionFolder.listFiles()!=null) {
+            File[] listFiles = submissionFolder.listFiles();
+            submittedFiles = listFiles!=null ? listFiles.length - 1 : 0;
+            if (listFiles != null) {
+                sizeTotal = getFolderSize(submissionFolder);
+            }
         }
+        String builder = "Submission Reference: " + submissionRef + LINE_SEPARATOR +
+            "Submission Path: " + (submissionFolder != null ? submissionFolder : "") + LINE_SEPARATOR +
+            "Number of files submitted: " + submittedFiles + LINE_SEPARATOR +
+            "Submission size: " + humanReadableByteCount(sizeTotal, true) + LINE_SEPARATOR +
+            "Upload type: " + uploadMethod + LINE_SEPARATOR;
+        sendEmail(userEmail, builder);
+    }
 
-        sendEmail(userEmail, builder.toString());
+    /**
+     * This method calculates long bytes into a human-readable format.
+     * @param bytes file size to calculate
+     * @param si si units, otherwise binary units
+     * @return
+     */
+    private static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
     /**
@@ -71,7 +81,6 @@ public class PrideEmailNotifier {
         SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
         msg.setFrom(from);
         msg.setText(body);
-
         mailSender.send(msg);
     }
 
@@ -83,16 +92,13 @@ public class PrideEmailNotifier {
      */
     private long getFolderSize(File folder) {
         long size = 0;
-
-        File files[] = folder.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                size += getFolderSize(file);
-            } else {
-                size += file.length();
+        for (File file : folder.listFiles()) {
+            try {
+                size += Files.size(file.toPath());
+            } catch (IOException ioe) {
+                logger.error("Error reading file to calculate file size for: " + file.getAbsolutePath());
             }
         }
-
         return size;
     }
 }
