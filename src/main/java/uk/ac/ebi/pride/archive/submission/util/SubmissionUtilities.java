@@ -1,5 +1,9 @@
 package uk.ac.ebi.pride.archive.submission.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.ac.ebi.pride.archive.submission.controller.SubmissionController;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,6 +19,7 @@ import java.util.Calendar;
  */
 public class SubmissionUtilities {
 
+    private static final Logger logger = LoggerFactory.getLogger(SubmissionUtilities.class);
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     /**
@@ -40,17 +45,16 @@ public class SubmissionUtilities {
     public static void generateSubmissionTicket(File submissionQueueFolder, File folderToSubmit, String submissionRef) throws IOException {
         String path = submissionQueueFolder.getAbsolutePath();
         String newFilePath = path + FILE_SEPARATOR + submissionRef;
-        // create new file
         File newTicket = new File(newFilePath);
         boolean creation = newTicket.createNewFile();
-
+        logger.info("Creating new ticket: "  + newTicket.getPath());
         if (creation) {
-
             PrintWriter writer = null;
             try {
                 writer = new PrintWriter(new FileWriter(newTicket));
-                writer.append(folderToSubmit.getAbsolutePath());
+                writer.append(folderToSubmit.getPath());
                 writer.flush();
+                logger.info("Submission path for new ticket: " + folderToSubmit.getPath());
             } finally {
                 if (writer != null) {
                     writer.close();

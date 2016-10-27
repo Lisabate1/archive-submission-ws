@@ -41,19 +41,36 @@ public class PrideEmailNotifier {
                             String submissionRef, String uploadMethod) throws MessagingException {
         long sizeTotal = 0;
         int submittedFiles = 0;
+        /*try {
+            if (submissionFolder!=null && submissionFolder.listFiles()==null) {
+                int i=0;
+                while (submissionFolder.listFiles()==null && i<6) {
+                    logger.info("Unable to list files in submission folder. " + i + "-th attempt, Sleeping for 10 seconds...");
+                    Thread.sleep(10000);
+                    i++;
+                }
+            }
+        } catch(InterruptedException ie) {
+            logger.error("InterruptedException when sleeping thread ", ie);
+        } // TODO LSF is slow, may not be able to read directory contents yet. PX Submission Tool cannot handle a response delay*/
         if (submissionFolder!=null && submissionFolder.listFiles()!=null) {
             File[] listFiles = submissionFolder.listFiles();
-            submittedFiles = listFiles!=null ? listFiles.length - 1 : 0;
-            if (listFiles != null) {
-                sizeTotal = getFolderSize(submissionFolder);
+            if (listFiles!=null) {
+                submittedFiles = listFiles.length - 1;
+                sizeTotal = getFolderSize(listFiles);
             }
+        } else {
+            logger.error("Submission folder is: " + (submissionFolder==null ? "null" : submissionFolder.getPath()) + " and is a directory? " + submissionFolder.isDirectory());
+            logger.error("Submission folder's number of files: " + (submissionFolder.listFiles()==null ? "null" : submissionFolder.listFiles()));
         }
-        String builder = "Submission Reference: " + submissionRef + LINE_SEPARATOR +
+        String message = "Submission Reference: " + submissionRef + LINE_SEPARATOR +
             "Submission Path: " + (submissionFolder != null ? submissionFolder : "") + LINE_SEPARATOR +
-            "Number of files submitted: " + submittedFiles + LINE_SEPARATOR +
-            "Submission size: " + humanReadableByteCount(sizeTotal, true) + LINE_SEPARATOR +
-            "Upload type: " + uploadMethod + LINE_SEPARATOR;
-        sendEmail(userEmail, builder);
+            "Number of files submitted: " + submittedFiles + (submittedFiles<1 ? "*" : "") + LINE_SEPARATOR +
+            "Submission size: " + humanReadableByteCount(sizeTotal, true) + (submittedFiles<1 ? "*" : "") + LINE_SEPARATOR +
+            "Upload type: " + uploadMethod + LINE_SEPARATOR +
+            (submittedFiles<1 ? "*Warning: LSF is slow, unable to read submission directory to calculate the stats above" : "");
+        logger.info("Sending email to pride-support:\n" + message);
+        sendEmail(userEmail, message);
     }
 
     /**
@@ -85,14 +102,14 @@ public class PrideEmailNotifier {
     }
 
     /**
-     * Get the file size within a folder in mega bytes
+     * Get the file size within a folder in mega bytes, does not include sub-folders
      *
-     * @param folder folder
+     * @param files array of Files
      * @return file size in mega bytes
      */
-    private long getFolderSize(File folder) {
+    private long getFolderSize(File[] files) {
         long size = 0;
-        for (File file : folder.listFiles()) {
+        for (File file : files) {
             try {
                 size += Files.size(file.toPath());
             } catch (IOException ioe) {
