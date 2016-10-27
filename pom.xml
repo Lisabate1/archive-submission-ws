@@ -236,4 +236,11 @@
             <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <scm>
+        <connection>scm:git:https://bitbucket.org/pride-ebi/archive-submission-ws.git</connection>
+        <developerConnection>scm:git:https://bitbucket.org/pride-ebi/archive-submission-ws.git</developerConnection>
+        <url>https://bitbucket.org/pride-ebi/archive-submission-ws.git</url>
+        <tag>HEAD</tag>
+    </scm>
 </project>
