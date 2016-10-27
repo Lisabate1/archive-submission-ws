@@ -113,7 +113,7 @@ public class SubmissionController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public SubmissionReferenceDetail completeSubmission(@RequestBody UploadDetail uploadDetail, Principal user) {
-        logger.info("New -submit- request for user:" + user.getName() + " folder:" + uploadDetail.getFolder());
+        logger.info("New -submit- request for user:" + user.getName() + " folder: " + uploadDetail.getFolder());
         String submissionRef = SubmissionUtilities.generateSubmissionReference();
         try {
             File folderToSubmit = uploadDetail.getMethod() == UploadMethod.ASPERA ?
