@@ -46,8 +46,8 @@ public class SubmissionUtilities {
         String path = submissionQueueFolder.getAbsolutePath();
         String newFilePath = path + FILE_SEPARATOR + submissionRef;
         File newTicket = new File(newFilePath);
-        boolean creation = newTicket.createNewFile();
         logger.info("Creating new ticket: "  + newTicket.getPath());
+        boolean creation = newTicket.createNewFile();
         if (creation) {
             PrintWriter writer = null;
             try {

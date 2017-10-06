@@ -66,14 +66,15 @@ public class SubmissionController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ContactDetail getUserDetail(Principal user) {
-
         UserSummary userSummary = userService.findByEmail(user.getName());
-
-        return new ContactDetail(userSummary.getEmail(),
-                                 userSummary.getTitle(),
-                                 userSummary.getFirstName(),
-                                 userSummary.getLastName(),
-                                 userSummary.getAffiliation());
+        return new ContactDetail(
+            userSummary.getEmail(),
+            userSummary.getTitle(),
+            userSummary.getFirstName(),
+            userSummary.getLastName(),
+            userSummary.getAffiliation(),
+            userSummary.getCountry(),
+            userSummary.getOrcid());
     }
 
     /**

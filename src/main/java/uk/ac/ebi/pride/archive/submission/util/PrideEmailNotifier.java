@@ -41,18 +41,6 @@ public class PrideEmailNotifier {
                             String submissionRef, String uploadMethod) throws MessagingException {
         long sizeTotal = 0;
         int submittedFiles = 0;
-        /*try {
-            if (submissionFolder!=null && submissionFolder.listFiles()==null) {
-                int i=0;
-                while (submissionFolder.listFiles()==null && i<6) {
-                    logger.info("Unable to list files in submission folder. " + i + "-th attempt, Sleeping for 10 seconds...");
-                    Thread.sleep(10000);
-                    i++;
-                }
-            }
-        } catch(InterruptedException ie) {
-            logger.error("InterruptedException when sleeping thread ", ie);
-        } // TODO LSF is slow, may not be able to read directory contents yet. PX Submission Tool cannot handle a response delay*/
         if (submissionFolder!=null && submissionFolder.listFiles()!=null) {
             File[] listFiles = submissionFolder.listFiles();
             if (listFiles!=null) {
