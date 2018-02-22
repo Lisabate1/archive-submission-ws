@@ -205,9 +205,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:https://bitbucket.org/pride-ebi/archive-submission-ws.git</connection>
-        <developerConnection>scm:git:https://bitbucket.org/pride-ebi/archive-submission-ws.git</developerConnection>
-        <url>https://bitbucket.org/pride-ebi/archive-submission-ws.git</url>
+        <connection>scm:git:https://bitbucket.org/proteomics-ebi/archive-submission-ws.git</connection>
+        <developerConnection>scm:git:https://bitbucket.org/proteomics-ebi/archive-submission-ws.git</developerConnection>
+        <url>https://bitbucket.org/proteomics-ebi/archive-submission-ws.git</url>
         <tag>HEAD</tag>
     </scm>
 </project>
