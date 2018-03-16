@@ -61,7 +61,6 @@ public class SubmissionController {
     @Value("#{pxProperties['px.aspera.server.port']}")
     private int asperaPort;
 
-
     /**
      * Request for ftp upload details
      */
