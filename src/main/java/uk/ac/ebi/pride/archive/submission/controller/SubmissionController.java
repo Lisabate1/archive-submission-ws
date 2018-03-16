@@ -58,6 +58,9 @@ public class SubmissionController {
     @Value("#{pxProperties['px.aspera.server.address']}")
     private String asperaHost;
 
+    @Value("#{pxProperties['px.aspera.server.port']}")
+    private int asperaPort;
+
 
     /**
      * Request for ftp upload details
@@ -95,7 +98,7 @@ public class SubmissionController {
                 result = new UploadDetail(UploadMethod.FTP, ftpHost, ftpPort, submissionDirectory.getAbsolutePath(), selectedDropBox);
                 break;
             case ASPERA:
-                result = new UploadDetail(UploadMethod.ASPERA, asperaHost, -1, submissionDirectory.getName(), selectedDropBox);
+                result = new UploadDetail(UploadMethod.ASPERA, asperaHost, asperaPort, submissionDirectory.getName(), selectedDropBox);
                 break;
             default:
                 throw new SubmissionException("Unrecognised submission method: " + method);
