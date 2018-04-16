@@ -3,7 +3,7 @@
     <groupId>uk.ac.ebi.pride.prider</groupId>
     <artifactId>archive-submission-ws</artifactId>
     <packaging>war</packaging>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.7</version>
     <name>pride-archive-submission-ws</name>
 
     <parent>
@@ -208,6 +208,6 @@
         <connection>scm:git:https://bitbucket.org/proteomics-ebi/archive-submission-ws.git</connection>
         <developerConnection>scm:git:https://bitbucket.org/proteomics-ebi/archive-submission-ws.git</developerConnection>
         <url>https://bitbucket.org/proteomics-ebi/archive-submission-ws.git</url>
-        <tag>HEAD</tag>
+        <tag>archive-submission-ws-1.0.7</tag>
     </scm>
 </project>
