@@ -18,7 +18,7 @@ public class SubmissionExceptionAdvice {
 
     private static final Logger logger = LoggerFactory.getLogger(SubmissionExceptionAdvice.class);
 
-    @Value("#{pxProperties['px.web.url']}")
+    @Value("${px.web.url}")
     private String pxUrl;
 
     @ExceptionHandler(SubmissionException.class)

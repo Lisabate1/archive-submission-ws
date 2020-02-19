@@ -1,0 +1,80 @@
+package uk.ac.ebi.pride.archive.submission.config;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
+import uk.ac.ebi.pride.archive.submission.util.DropBoxManager;
+import uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier;
+
+import java.util.*;
+
+@Configuration
+@ComponentScan(basePackages = {"uk.ac.ebi.pride.archive.security.project",
+        "uk.ac.ebi.pride.archive.security.user",
+        "uk.ac.ebi.pride.archive.repo"})
+public class BootStrapConfig {
+
+    public static final String DIRECTORY = "directory";
+    public static final String USER_NAME = "user";
+    public static final String PASSWORD = "password";
+    public static final String TO = "to";
+    public static final String SUBJECT = "subject";
+
+    @ConfigurationProperties(prefix = "px.drop.box")
+    public HashMap<String, HashMap<String, String>> dropBoxInitializations() {
+        return new HashMap<>();
+    }
+
+    @ConfigurationProperties(prefix = "px.notification.email")
+    public Properties mailInitializations() {
+        return new Properties();
+    }
+
+
+    @Bean
+    public PrideEmailNotifier prideEmailNotifier(MailSender mailSender, SimpleMailMessage templateMessage) {
+        return new PrideEmailNotifier(mailSender, templateMessage);
+    }
+
+    @Bean
+    public DropBoxManager dropBoxManager() {
+        return new DropBoxManager(dropBoxDetails());
+    }
+
+    public List<DropBoxDetail> dropBoxDetails() {
+        List<DropBoxDetail> dropBoxDetails = new ArrayList<>();
+        Map<String, HashMap<String, String>> dropBoxInitializations = dropBoxInitializations();
+        for (Map.Entry<String, HashMap<String, String>> e : dropBoxInitializations.entrySet()) {
+            Map<String, String> dropBox = e.getValue();
+            dropBoxDetails.add(new DropBoxDetail(dropBox.get(DIRECTORY), dropBox.get(USER_NAME), dropBox.get(PASSWORD)));
+        }
+        return dropBoxDetails;
+
+    }
+
+    @Bean
+    public JavaMailSenderImpl mailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        Properties properties = mailInitializations();
+        mailSender.setJavaMailProperties(properties);
+        return mailSender;
+    }
+
+    @Bean
+    public SimpleMailMessage templateMessage() {
+        Properties properties = mailInitializations();
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(properties.getProperty(TO));
+        simpleMailMessage.setSubject(properties.getProperty(SUBJECT));
+        return simpleMailMessage;
+    }
+}

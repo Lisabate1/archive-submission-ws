@@ -43,19 +43,19 @@ public class SubmissionController {
 
   @Autowired private UserSecureReadOnlyService userService;
 
-  @Value("#{pxProperties['px.submission.queue.dir']}")
+  @Value("${px.submission.queue.dir}")
   private String submissionQueue;
 
-  @Value("#{pxProperties['px.ftp.server.address']}")
+  @Value("${px.ftp.server.address}")
   private String ftpHost;
 
-  @Value("#{pxProperties['px.ftp.server.port']}")
+  @Value("${px.ftp.server.port}")
   private int ftpPort;
 
-  @Value("#{pxProperties['px.aspera.server.address']}")
+  @Value("${px.aspera.server.address}")
   private String asperaHost;
 
-  @Value("#{pxProperties['px.aspera.server.port']}")
+  @Value("${px.aspera.server.port}")
   private int asperaPort;
 
   /** Request for ftp upload details */
