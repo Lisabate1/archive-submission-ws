@@ -69,6 +69,24 @@
             <groupId>uk.ac.ebi.pride.archive</groupId>
             <artifactId>archive-security</artifactId>
             <version>${archive-security.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride</groupId>
+                    <artifactId>psm-index-search</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride</groupId>
+                    <artifactId>mongo-psm-index-search</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride</groupId>
+                    <artifactId>protein-identification-index-search</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>uk.ac.ebi.pride</groupId>
+                    <artifactId>mongo-protein-identification-index-search</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- oracle jdbc driver -->
@@ -92,11 +110,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
-                <configuration>
+                <!--<configuration>
                     <excludes>
                         <exclude>*.properties</exclude>
                     </excludes>
-                </configuration>
+                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

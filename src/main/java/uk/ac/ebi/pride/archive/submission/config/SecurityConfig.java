@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
                 .authorizeRequests()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/resubmission/**").hasAuthority("SUBMITTER")
                 .antMatchers("/submission/**").hasAuthority("SUBMITTER")
                 .antMatchers("/**").denyAll();
