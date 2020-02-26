@@ -16,7 +16,7 @@ setup.template.settings:
 output.logstash:
   hosts: $logstash_hosts
   loadbalance: true
-  index: 'px-doi-ws'
+  index: 'archive-submission-ws'
 
 processors:
   - add_host_metadata: ~
