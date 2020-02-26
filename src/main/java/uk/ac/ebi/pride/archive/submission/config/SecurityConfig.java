@@ -1,19 +1,19 @@
 package uk.ac.ebi.pride.archive.submission.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import uk.ac.ebi.pride.archive.repo.assay.AssayRepository;
 import uk.ac.ebi.pride.archive.repo.project.ProjectRepository;
 import uk.ac.ebi.pride.archive.repo.user.UserRepository;
@@ -25,22 +25,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableWebMvc
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     public void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
                 .authorizeRequests()
-                .antMatchers("/resubmission/**").hasRole("SUBMITTER")
-                .antMatchers("/submission/**").hasRole("SUBMITTER")
+                .antMatchers("/resubmission/**").hasAuthority("SUBMITTER")
+                .antMatchers("/submission/**").hasAuthority("SUBMITTER")
                 .antMatchers("/**").denyAll();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService());
+        auth.userDetailsService(userDetailsService);
     }
 
     @Bean
@@ -79,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public ProjectPermission projectPermission(ProjectRepository projectRepository) {
+    public ProjectPermission projectPermission() {
         return new ProjectPermission();
     }
 
@@ -103,16 +111,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public MethodSecurityExpressionHandler expressionHandler(PermissionEvaluator permissionEvaluator) {
-        DefaultMethodSecurityExpressionHandler methodSecurityExpressionHandler = new DefaultMethodSecurityExpressionHandler();
-        methodSecurityExpressionHandler.setPermissionEvaluator(permissionEvaluator);
-        return methodSecurityExpressionHandler;
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }

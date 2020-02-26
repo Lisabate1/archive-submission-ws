@@ -1,0 +1,62 @@
+# server settings
+server:
+  port: $port
+  servlet.context-path: /archive-submission-ws
+
+#log output file
+logging.path: '$logpath/logs_${HOSTNAME}/'
+
+#PX drop box details
+px:
+  ftp.server:
+    address: ftp-pride-private.ebi.ac.uk
+    port: 21
+  aspera.server:
+    address: hx-fasp-1.ebi.ac.uk
+    port: 3301
+  drop.box:
+    one:
+      directory: $dropBoxOneDirectory
+      user: $dropBoxOneUser
+      password: $dropBoxOnePassword
+    two:
+      directory: $dropBoxTwoDirectory
+      user: $dropBoxTwoUser
+      password: $dropBoxTwoPassword
+    three:
+      directory: $dropBoxThreeDirectory
+      user: $dropBoxThreeUser
+      password: $dropBoxThreePassword
+    four:
+      directory: $dropBoxFourDirectory
+      user: $dropBoxFourUser
+      password: $dropBoxFourPassword
+    five:
+      directory: $dropBoxFiveDirectory
+      user: $dropBoxFiveUser
+      password: $dropBoxFivePassword
+  submission.queue.dir: $submissionQueueDir
+  notification.email:
+    to: $emailTo
+    subject: $emailSubject
+    host: $emailHost
+  web.url: http://www.proteomexchange.org
+
+#prider jdbc details
+prider.jdbc:
+  driverClassName: $jdbcDriverClassName
+  url: $jdbcUrl
+  username: $jdbcUsername
+  password: $jdbcPassword
+  maxActive: 50
+  maxIdle: 25
+  minIdle: 1
+  initialSize: 1
+  minEvictableIdleTimeMillis: 60000
+  timeBetweenEvictionRunsMillis: 60000
+  numTestsPerEvictionRun: 3
+  maxWait: 10000
+  testOnBorrow: true
+  testWhileIdle: true
+  testOnReturn: false
+  validationQuery: SELECT 1 FROM dual

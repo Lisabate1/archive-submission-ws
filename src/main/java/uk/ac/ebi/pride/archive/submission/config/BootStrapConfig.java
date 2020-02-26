@@ -1,16 +1,12 @@
 package uk.ac.ebi.pride.archive.submission.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
 import uk.ac.ebi.pride.archive.submission.util.DropBoxManager;
 import uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier;
@@ -28,12 +24,15 @@ public class BootStrapConfig {
     public static final String PASSWORD = "password";
     public static final String TO = "to";
     public static final String SUBJECT = "subject";
+    public static final String HOST = "host";
 
+    @Bean
     @ConfigurationProperties(prefix = "px.drop.box")
     public HashMap<String, HashMap<String, String>> dropBoxInitializations() {
         return new HashMap<>();
     }
 
+    @Bean
     @ConfigurationProperties(prefix = "px.notification.email")
     public Properties mailInitializations() {
         return new Properties();
@@ -65,7 +64,7 @@ public class BootStrapConfig {
     public JavaMailSenderImpl mailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties properties = mailInitializations();
-        mailSender.setJavaMailProperties(properties);
+        mailSender.setHost(properties.getProperty(HOST));
         return mailSender;
     }
 

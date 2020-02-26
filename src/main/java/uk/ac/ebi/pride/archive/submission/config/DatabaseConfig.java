@@ -9,6 +9,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import uk.ac.ebi.pride.archive.submission.properties.DBProperties;
 
 import javax.persistence.EntityManagerFactory;
@@ -18,6 +19,7 @@ import static org.springframework.orm.jpa.vendor.Database.ORACLE;
 @Configuration
 @EnableJpaRepositories(basePackages = "uk.ac.ebi.pride.archive.repo")
 @EnableConfigurationProperties(DBProperties.class)
+@EnableTransactionManagement
 public class DatabaseConfig {
 
     public static final String APPLICATION = "application";

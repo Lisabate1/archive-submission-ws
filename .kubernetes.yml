@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: archive-submission-ws
+  labels:
+    app: archive-submission-ws
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: archive-submission-ws
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: archive-submission-ws
+    spec:
+      imagePullSecrets:
+        - name: $DOCKER_PULL_SECRET
+      volumes:
+        - name: application-config
+          configMap:
+            name: $ARCHIVE_SUBMISSION_WS_CONFIG_MAP
+            items:
+              - key: application.yml
+                path: application.yml
+        - name: filebeat-config
+          configMap:
+            name: $FILEBEAT_CONFIG_MAP
+            items:
+              - key: filebeat.yml
+                path: filebeat.yml
+        - name: logvolume
+          emptyDir: {}
+      containers:
+        - name: archive-submission-ws
+          image: $IMAGE
+          env:
+            - name: JAVA_OPTS
+              value: "-Dhttp.proxyHost=$http_proxy_host -Dhttp.proxyPort=$http_proxy_port"
+            - name: HTTP_PROXY
+              value: "$http_proxy_host:$http_proxy_port"
+            - name: HTTPS_PROXY
+              value: "$http_proxy_host:$http_proxy_port"
+            - name: http_proxy
+              value: "$http_proxy_host:$http_proxy_port"
+            - name: https_proxy
+              value: "$http_proxy_host:$http_proxy_port"
+          ports:
+            - containerPort: $port
+          volumeMounts:
+            - name: application-config
+              mountPath: "/archive-submission-ws/config/"
+              readOnly: true
+            - name: logvolume
+              mountPath: $logpath
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: $port
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: $port
+            initialDelaySeconds: 60
+            periodSeconds: 10
+        - name: filebeat-sidecar
+          image: docker.elastic.co/beats/filebeat:7.4.2
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: logvolume
+              mountPath: $logpath
+            - name: filebeat-config
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: archive-submission-ws-service
+spec:
+  selector:
+    app: archive-submission-ws
+  ports:
+    - protocol: TCP
+      port: $port
+      targetPort: $port
+  type: NodePort
