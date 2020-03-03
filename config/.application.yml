@@ -4,7 +4,11 @@ server:
   servlet.context-path: /archive-submission-ws
 
 #log output file
-logging.path: '$logpath/logs_${HOSTNAME}/'
+logging:
+  path: '$logpath/logs_${HOSTNAME}/'
+  config: config/logback-spring.xml
+    level:
+      root: INFO
 
 #PX drop box details
 px:
