@@ -40,7 +40,6 @@ kube_deploy_prod_hx:
     - apk add --update bash gettext tzdata coreutils
     - export HOSTNAME_BCKUP=$HOSTNAME && export HOSTNAME='${HOSTNAME}'
     - envsubst < config/.application.yml > config/application.yml
-    - envsubst < .filebeat.yml > filebeat.yml
     - export HOSTNAME=$HOSTNAME_BCKUP
     - mkdir -p ~/.kube
     - echo $KUBE_CONFIG > kubeconfig
@@ -53,10 +52,6 @@ kube_deploy_prod_hx:
     - kubectl -n $NAMESPACE create configmap $ARCHIVE_SUBMISSION_WS_CONFIG_MAP --from-file=config/application.yml || true
     # replace configmap if it already exists
     - kubectl -n $NAMESPACE create configmap $ARCHIVE_SUBMISSION_WS_CONFIG_MAP --from-file=config/application.yml -o yaml --dry-run | kubectl replace -f -
-    # create configmap for first time
-    - kubectl -n $NAMESPACE create configmap $FILEBEAT_CONFIG_MAP --from-file=filebeat.yml || true
-    # replace configmap if it already exists
-    - kubectl -n $NAMESPACE create configmap $FILEBEAT_CONFIG_MAP --from-file=filebeat.yml -o yaml --dry-run | kubectl replace -f -
     - envsubst < .kubernetes.yml > kubernetes.yml
     - cat kubernetes.yml
     - kubectl -n $NAMESPACE apply -f kubernetes.yml
