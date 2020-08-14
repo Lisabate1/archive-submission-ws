@@ -7,15 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.archive.repo.user.service.UserSummary;
-import uk.ac.ebi.pride.archive.security.user.UserSecureReadOnlyService;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import uk.ac.ebi.pride.archive.submission.error.submission.SubmissionException;
 import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.SubmissionReferenceDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.UploadDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.UploadMethod;
-import uk.ac.ebi.pride.archive.submission.model.user.ContactDetail;
 import uk.ac.ebi.pride.archive.submission.util.DropBoxManager;
 import uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier;
 import uk.ac.ebi.pride.archive.submission.util.SubmissionUtilities;
@@ -41,8 +43,6 @@ public class SubmissionController {
 
   @Autowired private PrideEmailNotifier prideEmailNotifier;
 
-  @Autowired private UserSecureReadOnlyService userService;
-
   @Value("${px.submission.queue.dir}")
   private String submissionQueue;
 
@@ -57,28 +57,6 @@ public class SubmissionController {
 
   @Value("${px.aspera.server.port}")
   private int asperaPort;
-
-  /** Request for ftp upload details */
-  @RequestMapping(
-    value = "/user",
-    method = RequestMethod.GET,
-    produces = MediaType.APPLICATION_JSON_VALUE
-  )
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public ContactDetail getUserDetail(Principal user) {
-    UserSummary userSummary = userService.findByEmail(user.getName());
-    return new ContactDetail(
-        userSummary.getEmail(),
-        userSummary.getTitle(),
-        userSummary.getFirstName(),
-        userSummary.getLastName(),
-        userSummary.getAffiliation(),
-        userSummary.getCountry(),
-        userSummary.getOrcid(),
-        userSummary.getAcceptedTermsOfUse(),
-        userSummary.getAcceptedTermsOfUseAt());
-  }
 
   /** Request for ftp upload details */
   @RequestMapping(

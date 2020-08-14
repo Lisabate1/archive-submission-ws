@@ -2,7 +2,6 @@ package uk.ac.ebi.pride.archive.submission.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,12 +10,13 @@ import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
 import uk.ac.ebi.pride.archive.submission.util.DropBoxManager;
 import uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = {"uk.ac.ebi.pride.archive.security.project",
-        "uk.ac.ebi.pride.archive.security.user",
-        "uk.ac.ebi.pride.archive.repo"})
 public class BootStrapConfig {
 
     public static final String DIRECTORY = "directory";

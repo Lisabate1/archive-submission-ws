@@ -46,21 +46,9 @@ px:
     host: $emailHost
   web.url: http://www.proteomexchange.org
 
-#prider jdbc details
-prider.jdbc:
-  driverClassName: $jdbcDriverClassName
-  url: $jdbcUrl
-  username: $jdbcUsername
-  password: $jdbcPassword
-  maxActive: 50
-  maxIdle: 25
-  minIdle: 1
-  initialSize: 1
-  minEvictableIdleTimeMillis: 60000
-  timeBetweenEvictionRunsMillis: 60000
-  numTestsPerEvictionRun: 3
-  maxWait: 10000
-  testOnBorrow: true
-  testWhileIdle: true
-  testOnReturn: false
-  validationQuery: SELECT 1 FROM dual
+app.name: archive-submission-ws
+pride-repo.api:
+  baseUrl: $repo_api_base_url
+  keyName: $repo_api_key_name
+  keyValue: $repo_api_key_value
+
