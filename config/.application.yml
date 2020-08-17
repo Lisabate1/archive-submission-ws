@@ -7,8 +7,7 @@ server:
 logging:
   path: '$logpath/logs_${HOSTNAME}/'
   config: config/logback-spring.xml
-    level:
-      root: INFO
+  level.root: INFO
 
 #PX drop box details
 px:
@@ -46,6 +45,7 @@ px:
     host: $emailHost
   web.url: http://www.proteomexchange.org
 
+#pride-repo-ws
 app.name: archive-submission-ws
 pride-repo.api:
   baseUrl: $repo_api_base_url
