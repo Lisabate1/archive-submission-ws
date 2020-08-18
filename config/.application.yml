@@ -5,9 +5,13 @@ server:
 
 #log output file
 logging:
-  path: '$logpath/logs_${HOSTNAME}/'
-  pattern.console: '%d{ISO8601} %-5level %t %C{1.}: %msg%n%throwable'
-  level.root: INFO
+  path: './logs_${HOSTNAME}/'
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+        boot: INFO
 
 #PX drop box details
 px:
