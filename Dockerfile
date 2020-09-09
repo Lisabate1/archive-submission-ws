@@ -2,15 +2,32 @@
 FROM maven:3.3.9-jdk-8-alpine AS build-env
 
 # Create app directory
-WORKDIR /archive-submission-ws
+WORKDIR /app
 
 COPY src ./src
 COPY pom.xml ./
-COPY config/application.yml ./application.yml
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -DjarFinalName=${JAR_FILE_NAME}
 
 # Package stage
-FROM maven:3.3.9-jdk-8-alpine
-WORKDIR /archive-submission-ws
-COPY --from=build-env /archive-submission-ws/target/archive-submission-ws.jar ./
-ENTRYPOINT java ${JAVA_OPTS} -jar archive-submission-ws.jar
+FROM openjdk:8-alpine3.9
+
+ENV USER=docker
+ENV UID=${NFS_UID}
+ENV GID=${NFS_GID}
+RUN addgroup --gid "$GID" "$USER" \
+   && adduser \
+   --disabled-password \
+   --gecos "" \
+   --home "$(pwd)" \
+   --ingroup "$USER" \
+   --no-create-home \
+   --uid "$UID" \
+   "$USER"
+
+RUN addgroup -g ${NFS_GID2}  group2
+RUN addgroup $USER group2
+
+WORKDIR /app
+COPY --from=build-env /app/target/${JAR_FILE_NAME}.jar ./
+
+ENTRYPOINT java ${JAVA_OPTS} -jar ${JAR_FILE_NAME}.jar

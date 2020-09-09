@@ -50,7 +50,7 @@ px:
   web.url: http://www.proteomexchange.org
 
 #pride-repo-ws
-app.name: archive-submission-ws
+app.name: $app_name
 pride-repo.api:
   baseUrl: $repo_api_base_url
   keyName: $repo_api_key_name

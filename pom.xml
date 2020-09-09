@@ -24,6 +24,7 @@
         <archive.repo.version>1.0.2</archive.repo.version>
         <archive.submission.model.version>1.0.3</archive.submission.model.version>
         <pride.web.utils.version>1.3.11</pride.web.utils.version>
+        <jarFinalName>archive-submission-ws</jarFinalName>
     </properties>
 
     <dependencies>
@@ -99,7 +100,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludeDevtools>true</excludeDevtools>
-                    <finalName>archive-submission-ws</finalName>
+                    <finalName>${jarFinalName}</finalName>
                 </configuration>
             </plugin>
             <plugin>
