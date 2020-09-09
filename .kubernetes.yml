@@ -27,13 +27,13 @@ spec:
         - name: $DOCKER_PULL_SECRET
       volumes:
         - name: logvolume
-            nfs:
-              server: $LOGS_NFS_SERVER
-              path: $LOGS_NFS_PATH
+          nfs:
+            server: $LOGS_NFS_SERVER
+            path: $LOGS_NFS_PATH
         - name: datavolume
-            nfs:
-              server: $DATA_NFS_SERVER
-              path: $DATA_NFS_PATH
+          nfs:
+            server: $DATA_NFS_SERVER
+            path: $DATA_NFS_PATH
         - name: application-config
           configMap:
             name: $ARCHIVE_SUBMISSION_WS_CONFIG_MAP
