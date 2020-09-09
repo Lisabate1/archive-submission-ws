@@ -2,7 +2,6 @@ variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   ARCHIVE_SUBMISSION_WS_CONFIG_MAP: archive-submission-ws-configmap-$CI_PIPELINE_IID
-  FILEBEAT_CONFIG_MAP: filebeat-config-$CI_PIPELINE_IID
   DOCKER_PULL_SECRET: archive-submission-ws-gitlab-docker-secret
   IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   NAMESPACE: archive-submission-ws-prod
@@ -12,18 +11,28 @@ variables:
 #  - template: Dependency-Scanning.gitlab-ci.yml
 #  - template: License-Management.gitlab-ci.yml
 
+build:
+  image: maven:3.3.9-jdk-8-alpine
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS compile
+
 docker_build:
   image: docker:18.09
   stage: build
   services:
     - docker:18.09-dind
   script:
-    - apk add --update bash gettext tzdata coreutils
-    - docker info
-    - envsubst < config/.application.yml > config/application.yml
-    - docker build -t $IMAGE .
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker push $IMAGE
+    - apk add --update bash gettext tzdata coreutils ca-certificates wget
+      - update-ca-certificates
+      - ls
+      - envsubst '${JAR_FILE_NAME} ${NFS_UID} ${NFS_GID} ${NFS_GID2}' < .Dockerfile > Dockerfile
+      - cat Dockerfile
+      - docker info
+      - docker build -t $IMAGE .
+      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+      - docker push $IMAGE
+      when: manual
 
 kube_deploy_prod_hh:
   environment: prod-hh
