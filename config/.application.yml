@@ -1,11 +1,11 @@
 # server settings
 server:
   port: $port
-  servlet.context-path: /archive-submission-ws
+  servlet.context-path: $contextPath
 
 #log output file
 logging:
-  path: './logs_${HOSTNAME}/'
+  path: $logspath/logs_${HOSTNAME}/
   level:
     root: INFO
     org:

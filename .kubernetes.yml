@@ -60,19 +60,21 @@ spec:
             - containerPort: $port
           volumeMounts:
             - name: application-config
-              mountPath: "/archive-submission-ws/config/"
+              mountPath: "/app/config/"
               readOnly: true
             - name: logvolume
-              mountPath: $logpath
+              mountPath: $logs_vol_path
+            - name: datavolume
+              mountPath: $data_vol_path
           livenessProbe:
             httpGet:
-              path: /archive-submission-ws/actuator/health
+              path: $contextPath/actuator/health
               port: $port
             initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /archive-submission-ws/actuator/health
+              path: $contextPath/actuator/health
               port: $port
             initialDelaySeconds: 60
             periodSeconds: 10
