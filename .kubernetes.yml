@@ -53,7 +53,6 @@ spec:
               mountPath: $logs_vol_path
             - name: datavolume
               mountPath: $data_vol_path
-              readOnly: true
           livenessProbe:
             httpGet:
               path: $contextPath/actuator/health
