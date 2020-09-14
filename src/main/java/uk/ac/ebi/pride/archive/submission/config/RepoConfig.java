@@ -21,11 +21,6 @@ public class RepoConfig {
     }
 
     @Bean
-    public ProjectRepoClient getProjectRepoClient() {
-        return prideRepoClientFactory.getProjectRepoClient();
-    }
-
-    @Bean
     public UserRepoClient getUserRepoClient() {
         return prideRepoClientFactory.getUserRepoClient();
     }

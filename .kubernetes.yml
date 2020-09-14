@@ -43,17 +43,6 @@ spec:
       containers:
         - name: archive-submission-ws
           image: $IMAGE
-          env:
-            - name: JAVA_OPTS
-              value: "-Dhttp.proxyHost=$http_proxy_host -Dhttp.proxyPort=$http_proxy_port -Dhttps.proxyHost=$http_proxy_host -Dhttps.proxyPort=$http_proxy_port -Dhttp.nonProxyHosts=$non_proxy_hosts"
-            - name: HTTP_PROXY
-              value: "http://$http_proxy_host:$http_proxy_port"
-            - name: HTTPS_PROXY
-              value: "http://$http_proxy_host:$http_proxy_port"
-            - name: http_proxy
-              value: "http://$http_proxy_host:$http_proxy_port"
-            - name: https_proxy
-              value: "http://$http_proxy_host:$http_proxy_port"
           ports:
             - containerPort: $port
           volumeMounts:
