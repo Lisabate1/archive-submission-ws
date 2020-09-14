@@ -5,13 +5,9 @@ server:
 
 #log output file
 logging:
-  path: $logspath/logs_${HOSTNAME}/
+  file.path: $logspath/logs_${HOSTNAME}/
   level:
     root: INFO
-    org:
-      springframework:
-        web: INFO
-        boot: INFO
 
 #PX drop box details
 px:
