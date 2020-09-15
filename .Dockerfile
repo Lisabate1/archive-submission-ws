@@ -29,5 +29,6 @@ RUN addgroup $USER group2
 
 WORKDIR /app
 COPY --from=build-env /app/target/${JAR_FILE_NAME}.jar ./
+COPY config/.logback-spring.xml ./config/.logback-spring.xml
 
 ENTRYPOINT java ${JAVA_OPTS} -jar ${JAR_FILE_NAME}.jar
