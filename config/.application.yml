@@ -5,7 +5,7 @@ server:
 
 #log output file
 logging:
-  config: './config/logback-spring.xml'
+  config: config/logback-spring.xml
   level:
     root: INFO
 
