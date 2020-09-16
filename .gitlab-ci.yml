@@ -50,7 +50,7 @@ kube_deploy_prod_hx:
     - apk add --update bash gettext tzdata coreutils
     - export HOSTNAME_BCKUP=$HOSTNAME && export HOSTNAME='${HOSTNAME}'
     - envsubst < config/.application.yml > config/application.yml
-    - envsubst < config/.logback-spring.xml > logback/logback-spring.xml
+    - envsubst < config/.logback-spring.xml > config/logback-spring.xml
     - export HOSTNAME=$HOSTNAME_BCKUP
     - mkdir -p ~/.kube
     - echo $KUBE_CONFIG > kubeconfig
