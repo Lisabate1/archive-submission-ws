@@ -57,7 +57,7 @@ spec:
               mountPath: "/app/config/"
               readOnly: true
             - name: logback-config
-              mountPath: "/app/config/"
+              mountPath: "/app/logback/"
               readOnly: true
             - name: logvolume
               mountPath: $logs_vol_path
