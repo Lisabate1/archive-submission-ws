@@ -38,12 +38,15 @@ px:
       directory: $dropBoxFiveDirectory
       user: $dropBoxFiveUser
       password: $dropBoxFivePassword
-  submission.queue.dir: $submissionQueueDir
+  submission:
+    queue.dir: $submissionQueueDir
+    mount.path: $submission_vol_path
   notification.email:
     to: $emailTo
     subject: $emailSubject
     host: $emailHost
   web.url: http://www.proteomexchange.org
+
 
 #pride-repo-ws
 app.name: $app_name

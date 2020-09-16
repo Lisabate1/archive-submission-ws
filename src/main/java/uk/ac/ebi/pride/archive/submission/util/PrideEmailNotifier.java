@@ -2,8 +2,11 @@ package uk.ac.ebi.pride.archive.submission.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import java.io.File;
@@ -15,14 +18,21 @@ import java.nio.file.Files;
  * @author Rui Wang
  * @version $Id$
  */
+
+@Component
 public class PrideEmailNotifier {
 
     private static final Logger logger = LoggerFactory.getLogger(PrideEmailNotifier.class);
 
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
     private MailSender mailSender;
+
     private SimpleMailMessage templateMessage;
 
+    @Value("${px.submission.mount.path}")
+    private String submissionMountPath;
+
+    @Autowired
     public PrideEmailNotifier(MailSender mailSender, SimpleMailMessage templateMessage) {
         this.mailSender = mailSender;
         this.templateMessage = templateMessage;
@@ -41,19 +51,20 @@ public class PrideEmailNotifier {
                             String submissionRef, String uploadMethod) throws MessagingException {
         long sizeTotal = 0;
         int submittedFiles = 0;
-        if (submissionFolder!=null && submissionFolder.listFiles()!=null) {
-            File[] listFiles = submissionFolder.listFiles();
-            if (listFiles!=null) {
+        if (submissionFolder != null) {
+            String relativeSubmissionDirectory = submissionFolder.getAbsolutePath().replace("/nfs/pride", submissionMountPath);
+            File[] listFiles = new File(relativeSubmissionDirectory).listFiles();
+            if (listFiles != null) {
                 submittedFiles = listFiles.length - 1;
                 sizeTotal = getFolderSize(listFiles);
             }
         } else {
-            logger.error("Submission folder is: " + (submissionFolder==null ? "null" : submissionFolder.getPath()) + " and is a directory? " + submissionFolder.isDirectory());
-            logger.error("Submission folder's number of files: " + (submissionFolder.listFiles()==null ? "null" : submissionFolder.listFiles()));
+            logger.error("Submission folder is: " + (submissionFolder == null ? "null" : submissionFolder.getPath()) + " and is a directory? " + submissionFolder.isDirectory());
+            logger.error("Submission folder's number of files: " + (submissionFolder.listFiles() == null ? "null" : submissionFolder.listFiles()));
         }
         String message = "Submission Reference: " + submissionRef + LINE_SEPARATOR +
-            "Submission Path: " + (submissionFolder != null ? submissionFolder : "") + LINE_SEPARATOR +
-            "Number of files submitted: " + submittedFiles + (submittedFiles<1 ? "*" : "") + LINE_SEPARATOR +
+                "Submission Path: " + (submissionFolder != null ? submissionFolder : "") + LINE_SEPARATOR +
+                "Number of files submitted: " + submittedFiles + (submittedFiles < 1 ? "*" : "") + LINE_SEPARATOR +
             "Submission size: " + humanReadableByteCount(sizeTotal, true) + (submittedFiles<1 ? "*" : "") + LINE_SEPARATOR +
             "Upload type: " + uploadMethod + LINE_SEPARATOR +
             (submittedFiles<1 ? "*Warning: LSF is slow, unable to read submission directory to calculate the stats above" : "");

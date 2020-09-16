@@ -35,6 +35,10 @@ spec:
           nfs:
             server: $DATA_NFS_SERVER
             path: $DATA_NFS_PATH
+        - name: submissionvolume
+          nfs:
+            server: $DATA_NFS_SERVER
+            path: $SUBMISSION_NFS_PATH
         - name: application-config
           configMap:
             name: $ARCHIVE_SUBMISSION_WS_CONFIG_MAP
@@ -63,6 +67,9 @@ spec:
               mountPath: $logs_vol_path
             - name: datavolume
               mountPath: $data_vol_path
+            - name: submissionvolume
+              mountPath: $submission_vol_path
+              readOnly: true
           livenessProbe:
             httpGet:
               path: $contextPath/actuator/health

@@ -38,12 +38,6 @@ public class BootStrapConfig {
         return new Properties();
     }
 
-
-    @Bean
-    public PrideEmailNotifier prideEmailNotifier(MailSender mailSender, SimpleMailMessage templateMessage) {
-        return new PrideEmailNotifier(mailSender, templateMessage);
-    }
-
     @Bean
     public DropBoxManager dropBoxManager() {
         return new DropBoxManager(dropBoxDetails());
