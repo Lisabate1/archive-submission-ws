@@ -1,10 +1,11 @@
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  ARCHIVE_SUBMISSION_WS_CONFIG_MAP: archive-submission-ws-configmap-$CI_PIPELINE_IID
+  ARCHIVE_SUBMISSION_WS_CONFIG_MAP: archive-submission-ws-configmap
   DOCKER_PULL_SECRET: archive-submission-ws-gitlab-docker-secret
   IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   NAMESPACE: archive-submission-ws-prod
+  LOGBACK_CONFIG_MAP: logback-config-map
 
 #include:
 #  - template: Container-Scanning.gitlab-ci.yml
@@ -61,7 +62,11 @@ kube_deploy_prod_hx:
     # create configmap for first time
     - kubectl -n $NAMESPACE create configmap $ARCHIVE_SUBMISSION_WS_CONFIG_MAP --from-file=config/application.yml || true
     # replace configmap if it already exists
-    - kubectl -n $NAMESPACE create configmap $ARCHIVE_SUBMISSION_WS_CONFIG_MAP --from-file=config/application.yml -o yaml --dry-run | kubectl replace -f -
+    - kubectl -n $NAMESPACE create configmap $ARCHIVE_SUBMISSION_WS_CONFIG_MAP --from-file=config/application.yml -o yaml --dry-run=client | kubectl replace -f -
+    # create configmap for first time
+    - kubectl -n $NAMESPACE create configmap $LOGBACK_CONFIG_MAP --from-file=config/logback-spring.xml || true
+    # replace configmap if it already exists
+    - kubectl -n $NAMESPACE create configmap $LOGBACK_CONFIG_MAP --from-file=config/logback-spring.xml -o yaml --dry-run=client | kubectl replace -f -
     - envsubst < .kubernetes.yml > kubernetes.yml
     - cat kubernetes.yml
     - kubectl -n $NAMESPACE apply -f kubernetes.yml

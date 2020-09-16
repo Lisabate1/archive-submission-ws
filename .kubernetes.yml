@@ -41,6 +41,12 @@ spec:
             items:
               - key: application.yml
                 path: application.yml
+        - name: logback-config
+          configMap:
+            name: $LOGBACK_CONFIG_MAP
+            items:
+              - key: logback-spring.xml
+                path: logback-spring.xml
       containers:
         - name: archive-submission-ws
           image: $IMAGE
@@ -48,6 +54,9 @@ spec:
             - containerPort: $port
           volumeMounts:
             - name: application-config
+              mountPath: "/app/config/"
+              readOnly: true
+            - name: logback-config
               mountPath: "/app/config/"
               readOnly: true
             - name: logvolume
