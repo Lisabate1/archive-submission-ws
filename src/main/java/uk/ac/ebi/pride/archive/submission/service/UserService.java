@@ -42,11 +42,10 @@ public class UserService {
         try {
             Optional<User> user = userRepoClient.findByEmail(userEmail);
             if (user.isPresent()) {
-                Optional<List<ProjectSummary>> projectSummaries = userRepoClient.findAllProjectsById(user.get().getId());
+                Optional<List<String>> projectSummaries = userRepoClient.findAllPrivateProjectAccessionsByUserId(user.get().getId());
                 if (projectSummaries.isPresent()) {
                     List<ProjectDetail> projectDetails = projectSummaries.get().stream()
-                            .filter(ps -> !ps.isPublicProject())
-                            .map(ps -> new ProjectDetail(ps.getAccession()))
+                            .map(ps -> new ProjectDetail(ps))
                             .collect(Collectors.toList());
                     projectDetailList.setProjectDetails(projectDetails);
                 }
