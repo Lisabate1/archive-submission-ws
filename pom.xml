@@ -21,7 +21,6 @@
  -->
 
     <properties>
-        <archive.repo.version>1.0.2</archive.repo.version>
         <archive.submission.model.version>1.0.3</archive.submission.model.version>
         <pride.web.utils.version>1.3.11</pride.web.utils.version>
         <jarFinalName>archive-submission-ws</jarFinalName>
@@ -80,6 +79,19 @@
                     <artifactId>spring-boot-starter-data-jpa</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.ac.ebi.pride.archive</groupId>
+            <artifactId>pride-repo-client</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

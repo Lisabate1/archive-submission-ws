@@ -35,37 +35,6 @@ public class SubmissionUtilities {
     }
 
     /**
-     * Generate a submission ticket
-     *
-     * @param submissionQueueFolder folder used as a submission queue
-     * @param folderToSubmit        folder to be submitted
-     * @param submissionRef         submission reference
-     * @throws java.io.IOException
-     */
-    public static void generateSubmissionTicket(File submissionQueueFolder, File folderToSubmit, String submissionRef) throws IOException {
-        String path = submissionQueueFolder.getAbsolutePath();
-        String newFilePath = path + FILE_SEPARATOR + submissionRef;
-        File newTicket = new File(newFilePath);
-        logger.info("Creating new ticket: "  + newTicket.getPath());
-        boolean creation = newTicket.createNewFile();
-        if (creation) {
-            PrintWriter writer = null;
-            try {
-                writer = new PrintWriter(new FileWriter(newTicket));
-                writer.append(folderToSubmit.getPath());
-                writer.flush();
-                logger.info("Submission path for new ticket: " + folderToSubmit.getPath());
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                }
-            }
-        } else {
-            throw new IllegalStateException("Failed to create new ticket in the submission queue");
-        }
-    }
-
-    /**
      * Create ftp folder for upload, this however doesn't create the actually folder
      * The creation of the folder should be done by the client side,
      * this is a design compromise for EBI file system permissions

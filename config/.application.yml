@@ -39,13 +39,21 @@ px:
       user: $dropBoxFiveUser
       password: $dropBoxFivePassword
   submission:
-    queue.dir: $submissionQueueDir
     mount.path: $submission_vol_path
   notification.email:
     to: $emailTo
     subject: $emailSubject
     host: $emailHost
   web.url: http://www.proteomexchange.org
+
+
+submission-api:
+  login-url: $submission_api_login_url
+  validation-url: $submission_api_validation_url
+  user: $submission_api_user
+  password: $submission_api_password
+proxy-host: $http_proxy_host
+proxy-port: $http_proxy_port
 
 
 #pride-repo-ws

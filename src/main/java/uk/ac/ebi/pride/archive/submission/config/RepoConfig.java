@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.pride.archive.repo.client.PrideRepoClientFactory;
-import uk.ac.ebi.pride.archive.repo.client.ProjectRepoClient;
+import uk.ac.ebi.pride.archive.repo.client.TicketRepoClient;
 import uk.ac.ebi.pride.archive.repo.client.UserProfileRepoClient;
 import uk.ac.ebi.pride.archive.repo.client.UserRepoClient;
 
@@ -23,6 +23,11 @@ public class RepoConfig {
     @Bean
     public UserRepoClient getUserRepoClient() {
         return prideRepoClientFactory.getUserRepoClient();
+    }
+
+    @Bean
+    public TicketRepoClient getTicketRepoClient() {
+        return prideRepoClientFactory.getTicketRepoClient();
     }
 
     @Bean
