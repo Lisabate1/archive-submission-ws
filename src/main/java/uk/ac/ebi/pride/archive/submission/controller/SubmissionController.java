@@ -20,6 +20,7 @@ import uk.ac.ebi.pride.archive.submission.model.submission.DropBoxDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.SubmissionReferenceDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.UploadDetail;
 import uk.ac.ebi.pride.archive.submission.model.submission.UploadMethod;
+import uk.ac.ebi.pride.archive.submission.service.ValidationService;
 import uk.ac.ebi.pride.archive.submission.util.DropBoxManager;
 import uk.ac.ebi.pride.archive.submission.util.PrideEmailNotifier;
 import uk.ac.ebi.pride.archive.submission.util.SubmissionUtilities;
@@ -51,8 +52,8 @@ public class SubmissionController {
   @Autowired
   private TicketRepoClient ticketRepoClient;
 
-  @Value("${px.submission.queue.dir}")
-  private String submissionQueue;
+  @Autowired
+  private ValidationService validationService;
 
   @Value("${px.ftp.server.address}")
   private String ftpHost;
@@ -143,8 +144,11 @@ public class SubmissionController {
       ticket.setSubmitterEmail(user.getName());
       ticket.setTicketId(SubmissionUtilities.generateSubmissionReference());
       ticketRepoClient.save(ticket);
+
+      validationService.validateTicket(ticket.getTicketId());
       prideEmailNotifier.notifyPride(
               user.getName(), folderToSubmit, submissionRef, uploadDetail.getMethod().getMethod());
+
     } catch (MessagingException e) {
       String msg = "Failed to send confirmation email to PRIDE";
       logger.error(msg, e);
