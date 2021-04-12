@@ -144,17 +144,19 @@ public class SubmissionController {
       ticket.setSubmitterEmail(user.getName());
       ticket.setTicketId(submissionRef);
       ticketRepoClient.save(ticket);
-
-      validationService.validateTicket(ticket.getTicketId());
       prideEmailNotifier.notifyPride(
               user.getName(), folderToSubmit, submissionRef, uploadDetail.getMethod().getMethod());
-
+      validationService.validateTicket(ticket.getTicketId());
     } catch (MessagingException e) {
       String msg = "Failed to send confirmation email to PRIDE";
       logger.error(msg, e);
       throw new SubmissionException(msg, e);
     } catch (IOException e) {
       String msg = "Failed to generate submission ticket";
+      logger.error(msg, e);
+      throw new SubmissionException(msg, e);
+    } catch (Exception e){
+      String msg = "Failed to call validation api";
       logger.error(msg, e);
       throw new SubmissionException(msg, e);
     }
