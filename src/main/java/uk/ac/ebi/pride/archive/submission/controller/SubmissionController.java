@@ -142,7 +142,7 @@ public class SubmissionController {
       ticket.setCreatedDate(new Date());
       ticket.setLastModifiedDate(new Date());
       ticket.setSubmitterEmail(user.getName());
-      ticket.setTicketId(SubmissionUtilities.generateSubmissionReference());
+      ticket.setTicketId(submissionRef);
       ticketRepoClient.save(ticket);
 
       validationService.validateTicket(ticket.getTicketId());
