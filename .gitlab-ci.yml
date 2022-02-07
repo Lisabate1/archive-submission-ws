@@ -15,6 +15,8 @@ variables:
 #    - mvn $MAVEN_CLI_OPTS compile
 
 docker_build:
+  variables:
+    DOCKER_AUTH_CONFIG: $docker_auth_json
   image: docker:18.09
   stage: build
   services:
