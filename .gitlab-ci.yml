@@ -43,6 +43,8 @@ kube_deploy_prod_hx:
   extends: .kube_deploy_script
 
 .kube_deploy_script:
+  variables:
+    DOCKER_AUTH_CONFIG: $docker_auth_json
   stage: deploy
   image: dtzar/helm-kubectl
   script:
