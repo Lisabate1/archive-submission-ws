@@ -9,6 +9,8 @@ logging:
   level:
     root: INFO
 
+management.health.mail.enabled: false
+
 #PX drop box details
 px:
   ftp.server:
@@ -62,4 +64,5 @@ pride-repo.api:
   baseUrl: $repo_api_base_url
   keyName: $repo_api_key_name
   keyValue: $repo_api_key_value
+
 
