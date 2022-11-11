@@ -36,6 +36,10 @@ px:
       directory: $dropBoxFourDirectory
       user: $dropBoxFourUser
       password: $dropBoxFourPassword
+    five:
+      directory: $dropBoxFiveDirectory
+      user: $dropBoxFiveUser
+      password: $dropBoxFivePassword
   submission:
     mount.path: $submission_vol_path
   notification.email:
