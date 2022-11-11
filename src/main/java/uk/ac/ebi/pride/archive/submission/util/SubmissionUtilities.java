@@ -2,15 +2,12 @@ package uk.ac.ebi.pride.archive.submission.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.ebi.pride.archive.submission.controller.SubmissionController;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * @author Jose A. Dianes
@@ -34,26 +31,10 @@ public class SubmissionUtilities {
         return "1-" + dateStamp + "-" + new BigInteger(16, random).toString(8).toUpperCase();
     }
 
-    /**
-     * Create ftp folder for upload, this however doesn't create the actually folder
-     * The creation of the folder should be done by the client side,
-     * this is a design compromise for EBI file system permissions
-     */
-    public static File createUploadFolder(File folder, String userName) {
-        String path = folder.getAbsolutePath();
-
+    public static String getUploadFolderTobeCreatedBySubmissionTool(String userName) {
         String[] parts = userName.split("@");
-
-        String newPath = path + FILE_SEPARATOR + parts[0] + "_" + getCurrentTimestamp();
-        File uploadDirectory = new File(newPath);
-
-        int cnt = 1;
-        while (uploadDirectory.exists()) {
-            uploadDirectory = new File(newPath + "_" + cnt);
-            cnt++;
-        }
-
-        return uploadDirectory;
+        UUID uuid = UUID.randomUUID();
+        return parts[0] + "_" + getCurrentTimestamp() + "_" + uuid;
     }
 
     private static String getCurrentTimestamp() {

@@ -81,10 +81,9 @@ public class SubmissionController {
     DropBoxDetail selectedDropBox = dropBoxManager.selectDropBox();
     logger.debug(
         "Drop box selected: {} for {} method", selectedDropBox.getDropBoxDirectory(), method);
-    File submissionDirectory =
-        SubmissionUtilities.createUploadFolder(
-            new File(selectedDropBox.getDropBoxDirectory()), user.getName());
-    logger.debug("Upload folder: " + submissionDirectory.getAbsolutePath());
+    String uploadFolder =
+        SubmissionUtilities.getUploadFolderTobeCreatedBySubmissionTool(user.getName());
+    logger.debug("Upload folder: " + uploadFolder);
     switch (uploadMethod) {
       case FTP:
         result =
@@ -92,7 +91,7 @@ public class SubmissionController {
                 UploadMethod.FTP,
                 ftpHost,
                 ftpPort,
-                submissionDirectory.getAbsolutePath(),
+                uploadFolder,
                 selectedDropBox);
         break;
       case ASPERA:
@@ -101,7 +100,7 @@ public class SubmissionController {
                 UploadMethod.ASPERA,
                 asperaHost,
                 asperaPort,
-                submissionDirectory.getName(),
+                uploadFolder,
                 selectedDropBox);
         break;
       default:
@@ -129,15 +128,11 @@ public class SubmissionController {
         "New -submit- request for user:" + user.getName() + " folder: " + uploadDetail.getFolder());
     String submissionRef = SubmissionUtilities.generateSubmissionReference();
     try {
-      File folderToSubmit =
-              uploadDetail.getMethod() == UploadMethod.ASPERA
-                      ? new File(
-                      uploadDetail.getDropBox().getDropBoxDirectory()
+      String folderToSubmit = uploadDetail.getDropBox().getDropBoxDirectory()
                               + System.getProperty("file.separator")
-                              + uploadDetail.getFolder())
-                      : new File(uploadDetail.getFolder());
+                              + uploadDetail.getFolder();
       Ticket ticket = new Ticket();
-      ticket.setSubmittedFilesPath(folderToSubmit.getPath());
+      ticket.setSubmittedFilesPath(folderToSubmit);
       ticket.setState(Ticket.State.INCOMING);
       ticket.setCreatedDate(new Date());
       ticket.setLastModifiedDate(new Date());

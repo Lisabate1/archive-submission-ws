@@ -47,27 +47,11 @@ public class PrideEmailNotifier {
      * @throws javax.mail.MessagingException
      */
     public void notifyPride(String userEmail,
-                            File submissionFolder,
+                            String submissionFolder,
                             String submissionRef, String uploadMethod) throws MessagingException {
-        long sizeTotal = 0;
-        int submittedFiles = 0;
-        if (submissionFolder != null) {
-            String relativeSubmissionDirectory = submissionFolder.getAbsolutePath().replace("/nfs/pride", submissionMountPath);
-            File[] listFiles = new File(relativeSubmissionDirectory).listFiles();
-            if (listFiles != null) {
-                submittedFiles = listFiles.length - 1;
-                sizeTotal = getFolderSize(listFiles);
-            }
-        } else {
-            logger.error("Submission folder is: " + (submissionFolder == null ? "null" : submissionFolder.getPath()) + " and is a directory? " + submissionFolder.isDirectory());
-            logger.error("Submission folder's number of files: " + (submissionFolder.listFiles() == null ? "null" : submissionFolder.listFiles()));
-        }
         String message = "Submission Reference: " + submissionRef + LINE_SEPARATOR +
                 "Submission Path: " + (submissionFolder != null ? submissionFolder : "") + LINE_SEPARATOR +
-                "Number of files submitted: " + submittedFiles + (submittedFiles < 1 ? "*" : "") + LINE_SEPARATOR +
-            "Submission size: " + humanReadableByteCount(sizeTotal, true) + (submittedFiles<1 ? "*" : "") + LINE_SEPARATOR +
-            "Upload type: " + uploadMethod + LINE_SEPARATOR +
-            (submittedFiles<1 ? "*Warning: LSF is slow, unable to read submission directory to calculate the stats above" : "");
+            "Upload type: " + uploadMethod + LINE_SEPARATOR;
         logger.info("Sending email to pride-support:\n" + message);
         sendEmail(userEmail, message);
     }

@@ -20,22 +20,6 @@ px:
     address: hx-fasp-1.ebi.ac.uk
     port: 3301
   drop.box:
-    one:
-      directory: $dropBoxOneDirectory
-      user: $dropBoxOneUser
-      password: $dropBoxOnePassword
-    two:
-      directory: $dropBoxTwoDirectory
-      user: $dropBoxTwoUser
-      password: $dropBoxTwoPassword
-    three:
-      directory: $dropBoxThreeDirectory
-      user: $dropBoxThreeUser
-      password: $dropBoxThreePassword
-    four:
-      directory: $dropBoxFourDirectory
-      user: $dropBoxFourUser
-      password: $dropBoxFourPassword
     five:
       directory: $dropBoxFiveDirectory
       user: $dropBoxFiveUser
