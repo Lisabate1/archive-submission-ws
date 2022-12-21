@@ -41,7 +41,9 @@ import java.util.Date;
 @RequestMapping("/submission")
 public class SubmissionController {
 
+  public static final String NFS_PRIDE_DROP = "/nfs/pride/drop";
   private static final Logger logger = LoggerFactory.getLogger(SubmissionController.class);
+  public static final String NFS_FTP_PRIVATE = "/nfs/ftp/private";
 
   @Autowired
   private DropBoxManager dropBoxManager;
@@ -131,6 +133,7 @@ public class SubmissionController {
       String folderToSubmit = uploadDetail.getDropBox().getDropBoxDirectory()
                               + System.getProperty("file.separator")
                               + uploadDetail.getFolder();
+      folderToSubmit = folderToSubmit.replace(NFS_PRIDE_DROP, NFS_FTP_PRIVATE);
       Ticket ticket = new Ticket();
       ticket.setSubmittedFilesPath(folderToSubmit);
       ticket.setState(Ticket.State.INCOMING);
