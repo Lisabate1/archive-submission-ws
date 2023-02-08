@@ -40,8 +40,6 @@ px:
       directory: $dropBoxFiveDirectory
       user: $dropBoxFiveUser
       password: $dropBoxFivePassword
-  submission:
-    mount.path: $submission_vol_path
   notification.email:
     to: $emailTo
     subject: $emailSubject

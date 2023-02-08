@@ -32,24 +32,12 @@ spec:
       labels:
         app: $app_name
     spec:
-      securityContext:
-        runAsUser: $NFS_UID
-        runAsGroup: $NFS_GID
-        fsGroup: $NFS_GID2
       imagePullSecrets:
         - name: $DOCKER_PULL_SECRET
       volumes:
         - name: logvolume
           persistentVolumeClaim:
             claimName: $log_volume_pvc
-        - name: datavolume
-          nfs:
-            server: $DATA_NFS_SERVER
-            path: $DATA_NFS_PATH
-        - name: submissionvolume
-          nfs:
-            server: $DATA_NFS_SERVER
-            path: $SUBMISSION_NFS_PATH
         - name: application-config
           configMap:
             name: $ARCHIVE_SUBMISSION_WS_CONFIG_MAP
@@ -68,9 +56,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: $port
-          env:
-            - name: APM_AGENT_OPTS
-              value: "-javaagent:${APM_AGENT_JAR} -Delastic.apm.service_name=${app_name} -Delastic.apm.application_packages=${APM_PACKAGE} -Delastic.apm.server_urls=${APM_SERVER}"
+#          env:
+#            - name: APM_AGENT_OPTS
+#              value: "-javaagent:${APM_AGENT_JAR} -Delastic.apm.service_name=${app_name} -Delastic.apm.application_packages=${APM_PACKAGE} -Delastic.apm.server_urls=${APM_SERVER}"
           volumeMounts:
             - name: application-config
               mountPath: "/app/config/"
@@ -80,11 +68,6 @@ spec:
               readOnly: true
             - name: logvolume
               mountPath: $logspath
-            - name: datavolume
-              mountPath: $data_vol_path
-            - name: submissionvolume
-              mountPath: $submission_vol_path
-              readOnly: true
           livenessProbe:
             httpGet:
               path: $contextPath/actuator/health

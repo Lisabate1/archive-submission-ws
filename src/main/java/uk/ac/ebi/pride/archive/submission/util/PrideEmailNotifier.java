@@ -29,9 +29,6 @@ public class PrideEmailNotifier {
 
     private SimpleMailMessage templateMessage;
 
-    @Value("${px.submission.mount.path}")
-    private String submissionMountPath;
-
     @Autowired
     public PrideEmailNotifier(MailSender mailSender, SimpleMailMessage templateMessage) {
         this.mailSender = mailSender;
