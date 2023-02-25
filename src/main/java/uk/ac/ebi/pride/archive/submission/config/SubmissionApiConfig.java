@@ -23,7 +23,7 @@ public class SubmissionApiConfig {
     @Getter
     private String validationUrl;
 
-    @Value("${submission-api.validationAndSubmission-url}")
+    @Value("${submission-api.validationAndSubmissionUrl}")
     @Getter
     private String validationAndSubmissionUrl;
 
