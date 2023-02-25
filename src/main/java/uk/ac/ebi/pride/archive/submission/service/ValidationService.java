@@ -45,14 +45,14 @@ public class ValidationService {
             headers.setAccept(Arrays.asList(MediaType.ALL));
             headers.set("Authorization", "Bearer " + token);
             HttpEntity<MultiValueMap<String, String>> validationRequestEntity = new HttpEntity(headers);
-            String validationUrl = submissionApiConfig.getValidationUrl() + "?force=true&verifyCommand=false&ticket=" + ticketId;
+            String validationAndSubmissionUrl = submissionApiConfig.getValidationAndSubmissionUrl() + "?verifyCommand=false&ticket=" + ticketId;
 
-            ResponseEntity<String> response = restTemplate.postForEntity(validationUrl, validationRequestEntity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(validationAndSubmissionUrl, validationRequestEntity, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
-                log.info("Successfully sent validation request to submission-api for ticketId : " +
+                log.info("Successfully sent validationAndSubmission request to submission-api for ticketId : " +
                         ticketId + " - " + response.getBody().replaceAll("\n", " ### "));
             } else {
-                log.error("Failed to send validation request to submission-api for ticketId : " + ticketId + " : " + validationUrl);
+                log.error("Failed to send validationAndSubmission request to submission-api for ticketId : " + ticketId + " : " + validationAndSubmissionUrl);
             }
         } else {
             log.error("Failed login to submission-api : " + loginResponse.getStatusCode() + " " + loginResponse.getBody());

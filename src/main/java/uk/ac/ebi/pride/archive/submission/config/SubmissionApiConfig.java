@@ -23,6 +23,10 @@ public class SubmissionApiConfig {
     @Getter
     private String validationUrl;
 
+    @Value("${submission-api.validationAndSubmission-url}")
+    @Getter
+    private String validationAndSubmissionUrl;
+
     @Value("${submission-api.user}")
     private String user;
 

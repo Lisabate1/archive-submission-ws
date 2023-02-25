@@ -50,6 +50,7 @@ px:
 submission-api:
   login-url: $submission_api_login_url
   validation-url: $submission_api_validation_url
+  validationAndSubmissionUrl: $validationAndSubmissionUrl
   user: $submission_api_user
   password: $submission_api_password
 proxy-host: $http_proxy_host
